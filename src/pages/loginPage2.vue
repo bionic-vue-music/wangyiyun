@@ -131,7 +131,7 @@ export default {
             //验证是否通过
           if(res.data.code==200){
                 //获取等级..信息
-                this.getUserLevelInfo();
+               
                 this.$notify({
                     title:'提示',
                     message:"登陆成功",
@@ -148,6 +148,7 @@ export default {
                 this.$router.push({name:'index'});
                 //关闭dialog
                 this.setDialogTableVisible(false);
+                 this.getUserLevelInfo();
             }
           }else{
                 //   console.log(res);

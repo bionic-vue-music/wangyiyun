@@ -2,6 +2,7 @@ import Vue from "vue";
 import vuex from "vuex"
 import loginModule from './login/index'
 import userModule from './user/index'
+import searchSongsModule from './searchSongs/index'
 // import createPersistedState from 'vuex-persistedstate';
 Vue.use(vuex);
 
@@ -21,7 +22,8 @@ export default new vuex.Store({
   },
   modules:{
       loginModule,
-      userModule
+      userModule,
+      searchSongsModule,
     },
   // plugins: [createPersistedState()],
 })

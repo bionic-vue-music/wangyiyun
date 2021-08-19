@@ -62,13 +62,20 @@ export default{
         //用户等级...
         async getUserLevelInfo(context){
             let res=await userLevelInfo().catch(err=>{console.log(err);});
+            if(!res)return
+            console.log(res);
             let {level}=res.data.data;
             context.commit('setLevel',level);
             
         },
         //logout
-        async getLogout(){
-           await Logout();
+        async getLogout(context){
+           let res=await Logout();
+           console.log(res);
+           let profile={}
+        //    let {profile}=res.data
+           context.commit('setProfile',profile);//传入空数据，初始化新状态
+           context.commit('setLevel',''); //
         }
     },
 }

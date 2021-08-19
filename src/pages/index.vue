@@ -51,7 +51,7 @@ export default {
     top: 0px;
 }
 .second-container{
-    height: 750px;
+    height: 850px;
     background-color: #2b2b2b;
 }
 .el-header{
