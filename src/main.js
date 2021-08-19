@@ -6,9 +6,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import router from "./router"
 import httpPlugin from "./plugins/http"
 import store from "./store/index"
+import autoFocus from "./plugins/autoFocus"
 Vue.use(httpPlugin)
 Vue.use(ElementUI)
 Vue.use(preDefault);
+Vue.use(autoFocus);
 Vue.config.productionTip = false
 
 new Vue({

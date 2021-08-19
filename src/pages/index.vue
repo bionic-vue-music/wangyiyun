@@ -43,6 +43,7 @@ export default {
     background-color: #2b2b2b;
     border-top: 2px solid rgb(157, 26, 26);
     border-left: 1px solid rgb(90, 87, 87);  
+    z-index: 10;
 }
 .el-footer{
     background-color: #1f1f22;
@@ -52,5 +53,8 @@ export default {
 .second-container{
     height: 750px;
     background-color: #2b2b2b;
+}
+.el-header{
+    z-index: 20;
 }
 </style>

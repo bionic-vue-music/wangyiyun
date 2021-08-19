@@ -17,6 +17,9 @@ export default {
 
 <style>
 body{
+  /* 阻止默认行为 */
+  /* user-drag:none; */
+  user-select:none;
   margin: 0;
   padding: 0;
 }
@@ -40,13 +43,12 @@ body{
 }
 @keyframes tabBar1 {
   0%{
-     opacity: 0;
-     transform: translateY(-100px);
+     opacity: 0.8;
+     transform: scale(1.3);
   }
   100%{
     opacity: 1;
-    transform-origin: center;
-    transform: translateX(0px) ;
+    transform: scale(1);
   }
 }
 

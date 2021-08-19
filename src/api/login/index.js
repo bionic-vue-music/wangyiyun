@@ -74,3 +74,15 @@ export function loginRefreshStatus(){
         method:'get'
     })
 }
+
+//手机号登录
+export function loginByPhone(userPhone){
+    return Vue.$http({
+        url:'/login/cellphone',
+        method:'get',
+        params:{
+            phone:userPhone.phone,
+            password:userPhone.password
+        }
+    }).catch(err=>{console.log(err);return})
+}

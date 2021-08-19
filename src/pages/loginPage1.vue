@@ -1,5 +1,5 @@
 <template>
-    <div class="loginBox"  v-loading="loading">
+    <div class="loginBox"  v-loading="loading" element-loading-text="数据加载中..."  element-loading-spinner="el-icon-loading">
         <h1>扫码登陆</h1>
            <div class="loginPng">
                <img src="../assets/login1.png" alt="" class="showMOreLogin">
@@ -16,7 +16,7 @@
 <script>
 import {createBase64,qrImgStatus,} from "../api/login/index.js";
 import QRCode from 'qrcodejs2' //导入二维码库
-import {mapActions} from "vuex"
+import {mapActions,mapGetters,mapMutations} from "vuex"
 export default {
     name:'loginPage1',
     data(){
@@ -27,37 +27,19 @@ export default {
          key:''//存储二维码key值
       }
     },
+    computed:{
+       ...mapGetters(['getDialogTableVisible']),
+       ...mapGetters('userModule',['getUserId']),
+    },
     methods:{
-        ...mapActions('loginModule',['getLoginStatus'])
+        ...mapMutations(['setDialogTableVisible']),
+        ...mapActions('loginModule',['getLoginStatus']),
+        ...mapActions('userModule',['getUserInfo','getUserDetail',])
     },
     //keepalive 不会让组件走此beforeRouteEnter 所以从其他页面返回回来失败，用activated钩子
     async activated(){
-       
-  },
-  deactivated(){
-      clearInterval(this.timer);
-    //   console.log();
-  },
-  async created(){
-       let res=await createBase64().catch(err=>{console.log(err)});
-       console.log(res.config.params.key);
-       this.key=res.config.params.key
-        let {code,data}=res.data;
-        if(code!='200') return;
-        if(this.hasEwm) return;//判断当前是否又二维码，避免重复挂在
-            //调用的时候DOM还没有渲染好，所以qrcode.makeCode的调用要放在$nextTick里面
-            //理解：nextTick()，是将回调函数延迟在下一次dom更新数据后调用，简单的理解是：当数据更新了，在dom中渲染后，自动执行该函数，
-        let qrcode = new QRCode('qrcode',{
-                width: 128,
-                height: 128,
-            });
-        this.$nextTick(()=>{
-            qrcode.makeCode(data.qrurl);
-            this.loading=false;
-            this.hasEwm=true;
-        });
-
-
+      //发送请求再激活钩子里：从其他页面回来要发送请求...
+      
       //轮询
     //   解释：setInterval不会清除定时器队列（js单线程），每重复执行1次都会导致定时器叠加，最终卡死你的网页。
     //   setInterval放在外层，内层嵌套setTimeout
@@ -75,14 +57,33 @@ export default {
                 _this.$notify({
                     title:'提示',
                     message,
-                    type:'success'
+                    type:'success',
+                    duration:3000
                 });
                 
-                console.log(res);
-                console.log(res.data.cookie);
-                let status=await this.getLoginStatus();
-                console.log(status);
-               
+                // console.log(res);
+                // console.log(res.data.cookie);
+                //获取用户状态，数据
+                let userData=await _this.getLoginStatus();
+                let {data}=userData.data
+                if(data.code==200){
+                   
+                  
+                    //退出登录页
+                    //关闭dialog
+                    _this.setDialogTableVisible(false);
+                     _this.$router.back() //回退获取数据
+
+                    //欢迎提示
+                    _this.$message({
+                        title:'提示',
+                        message:`欢迎你,${data.profile.nickname}`,
+                        type:'success',
+                        duration:3000
+                    });
+                    // by:id--获取用户详情
+                   _this.getUserDetail(data.profile.userId);
+                }
               }else if(code==800){
                  _this.$notify({
                     title:'提示',
@@ -102,7 +103,35 @@ export default {
               }
           })
         },0)
-      },5000);
+      },10000);
+  },
+  deactivated(){
+      clearInterval(this.timer);
+    //   if(!this.getUserId){
+    //     this.setDialogTableVisible(false)
+    //   }
+      console.log(2);
+  },
+  
+  async created(){
+       //生成二维码
+       let res=await createBase64().catch(err=>{console.log(err)});
+       console.log(res.config.params.key);
+       this.key=res.config.params.key
+        let {code,data}=res.data;
+        if(code!='200') return;
+        if(this.hasEwm) return;//判断当前是否又二维码，避免重复挂在
+            //调用的时候DOM还没有渲染好，所以qrcode.makeCode的调用要放在$nextTick里面
+            //理解：nextTick()，是将回调函数延迟在下一次dom更新数据后调用，简单的理解是：当数据更新了，在dom中渲染后，自动执行该函数，
+        let qrcode = new QRCode('qrcode',{
+                width: 128,
+                height: 128,
+            });
+        this.$nextTick(()=>{
+            qrcode.makeCode(data.qrurl);
+            this.loading=false;
+            this.hasEwm=true;
+        });
   }
 }
 </script>
@@ -125,7 +154,7 @@ export default {
     transition: all 0.8s;
 }
 .ewmLogin{
-    margin-left: 110px;
+    margin-left: 130px;
     transition: all 0.8s;
 }
 .scanLogin{

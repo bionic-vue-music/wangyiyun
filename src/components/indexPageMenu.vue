@@ -2,6 +2,7 @@
     <el-menu
       background-color="#2b2b2b"
       text-color="#fff"
+      router
       active-text-color="#ffd04b">
           <el-menu-item index="1-1"><span class="boldSpan">发现音乐</span></el-menu-item>
           <el-menu-item index="1-2"><span class="boldSpan">播客</span></el-menu-item>

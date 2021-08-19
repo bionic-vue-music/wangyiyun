@@ -5,7 +5,7 @@
        </div>
        <div class="zzb" @click="backTo_ewm"  title="二维码登录更安全哦"></div>
        <img src="../assets/loginBc.png" alt="" class="loginBc">
-       <el-form ref="form"  :model="loginPhone" :rules='rules'>
+       <el-form ref="loginForm"  :model="loginPhone" :rules='rules' >
         <el-form-item>
             <el-dropdown size="mini" split-button type="primary">
             +86
@@ -18,17 +18,17 @@
             </el-dropdown-menu>
             </el-dropdown>
         </el-form-item>
-         <el-form-item  prop="phoneNumber" >
-           <el-input v-model.trim="loginPhone.phoneNumber" placeholder="请输入手机号码" @input='change'></el-input>
+         <el-form-item  prop="phone" >
+           <el-input v-model.trim="loginPhone.phone" placeholder="请输入手机号码" clearable></el-input>
          </el-form-item>
          <el-form-item prop="password" >
-            <el-input type="password" prop="password" placeholder="请输入密码" v-model.trim="loginPhone.password" prefix-icon="el-icon-key"></el-input>
+            <el-input type="password" prop="password" placeholder="请输入密码" clearable v-model.trim="loginPhone.password" prefix-icon="el-icon-key"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-checkbox label="自动登录" name="type"></el-checkbox>
+            <el-checkbox label="自动登录" name="type" ></el-checkbox>
         </el-form-item>
         <el-form-item>
-            <el-button type="danger" size="medium ">登录</el-button>
+            <el-button type="danger" size="medium " @click.native.prevent="onSubmit">登录</el-button>
         </el-form-item>
          <el-form-item class="regist">
             <a href="">注册</a>
@@ -58,26 +58,28 @@
             </ul>
         </el-form-item>
         <el-form-item class="polices">
-             <el-checkbox label="同意" name="type">
-                <span class="confirm">同意</span><span><a href="https://st.music.163.com/official-terms/service">《服务条款》</a></span>
-                <span><a href="https://st.music.163.com/official-terms/privacy">《隐私政策》</a></span>
-                <span><a href="https://st.music.163.com/official-terms/children">《儿童隐私政策》</a></span>
+             <el-checkbox label="同意" name="type" v-model='isChecked'>
+                <span class="confirm">同意</span><span><a href="https://st.music.163.com/official-terms/service" target="_blank">《服务条款》</a></span>
+                <span><a href="https://st.music.163.com/official-terms/privacy" target="_blank">《隐私政策》</a></span>
+                <span><a href="https://st.music.163.com/official-terms/children" target="_blank">《儿童隐私政策》</a></span>
             </el-checkbox>
         </el-form-item>
        </el-form>
     </div>
 </template>
 <script>
+import {mapMutations,mapActions,mapGetters} from "vuex"
 export default {
     name:'loginPage2',
     data(){
         return{
             loginPhone:{
-                phoneNumber:'',
+                phone:'',
                 password:''
             },
+            isChecked:false,//条款选中
             rules:{
-                phoneNumber:[
+                phone:[
                     {required:true,message:"请输入正确的电话号码",trigger:'blur'},
                     {min:11,max:11,message:"电话号码尾位数必须是11位",trigger:'blur'}
                 ],
@@ -87,14 +89,86 @@ export default {
             }
         }
     },
+    //组件失活重置表单
+    deactivated(){
+        this.$refs.loginForm.resetFields();
+    },
+    computed:{
+        ...mapGetters('userModule',['getProfile']),
+        ...mapGetters(['getAutoLogin']),
+    },
     methods:{
+        ...mapMutations(['setDialogTableVisible','setAutoLogin']),
+        ...mapActions('userModule',['getLoginByPhone','getUserLevelInfo']),
         backTo_ewm(){
          this.$router.back(); //go(-1)回退+刷新  back()回退
         },
-        change(){
-            this.$forceUpdate()
+        //表单提交
+        async onSubmit(){
+            if(!this.isChecked){
+              this.$message({
+                    title:'提示',
+                    message:`请勾选下方协议`,
+                    type:'error',
+                    duration:3500
+                });
+                return;
+            }
+
+            let valid = await this.$refs.loginForm
+            .validate()
+            .catch((err) => console.log(err))
+
+            if (!valid) {
+                // 验证没通过
+                return
+            }
+          //触发手机登录请求
+          let res=await this.getLoginByPhone(this.loginPhone);
+            console.log(res);
+          if(res){
+
+            //验证是否通过
+          if(res.data.code==200){
+                //获取等级..信息
+                this.getUserLevelInfo();
+                this.$notify({
+                    title:'提示',
+                    message:"登陆成功",
+                    type:'success',
+                    duration:3500
+                });
+                this.$message({
+                    title:'提示',
+                    message:`欢迎你,${this.getProfile[0].nickname}`,
+                    type:'success',
+                    duration:3500
+                });
+                //跳转路由到index
+                this.$router.push({name:'index'});
+                //关闭dialog
+                this.setDialogTableVisible(false);
+            }
+          }else{
+                //   console.log(res);
+                this.$message({
+                    title:'提示',
+                    message:`手机号或密码错误`,
+                    type:'error',
+                    duration:3500
+                });
+
+
+                //初始化input  bug不起作用
+                // this.$set(this.loginForm,'phone','');
+                // this.$set(this.loginForm,'password','');
+            }
         }
-    }
+    },
+//     beforeRouteLeave(next){
+//      this.setDialogTableVisible(false);
+//      next();
+//   },
 }
 </script>
 <style scoped>
@@ -131,7 +205,7 @@ export default {
       font-size: 10px;
   }
   .el-form-item{
-      height: 30px;
+      height: 35px;
   }
   .el-button{
       width: 80%;
