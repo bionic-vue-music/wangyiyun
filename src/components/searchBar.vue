@@ -2,7 +2,7 @@
     <div>
         <span class="title">热搜榜</span>
         <ul>
-            <li v-for="(song,index) in getHotSongs" :key="song.score">
+            <li v-for="(song,index) in getHotSongs" :key="song.score"  @click='getSongsInfo($event)'>
                 <div class="index">
                     <span :style="index<=2 && oneToThree">
                       {{index+1}}
@@ -10,7 +10,7 @@
                 </div>
                 <div class="content">
                     <div>
-                       <span class="songName">{{song.searchWord}}</span>
+                       <span class="songName" id="songName">{{song.searchWord}}</span>
                        <span>
                            <img :src="song.iconUrl" alt="" v-if="song.iconType==1" class="hot">
                            <img :src="song.iconUrl" alt="" v-if="song.iconType==5" class="up">
@@ -20,14 +20,14 @@
                     <div class="outsongContent">
                        <span class="songContent">{{song.content}}</span>
                     </div>
-                </div>
+                </div>  
             </li>
         </ul>
     </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapGetters,mapMutations,mapActions} from "vuex"
 export default {
     name:'searchBar',
     data(){
@@ -39,6 +39,18 @@ export default {
     },
     computed:{
         ...mapGetters('searchSongsModule',['getHotSongs']),
+    },
+    methods:{
+        ...mapMutations('searchSongsModule',['setBarToInputKeyWord']),
+        ...mapActions('searchSongsModule',['getSearchRes']),
+        //得到当前li中songname传递给父组件中input
+        async getSongsInfo(e){
+            // console.log(e.currentTarget);
+            // console.log(e.currentTarget.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.innerHTML);//当前歌名
+            let songName=e.currentTarget.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.innerHTML;
+            await this.getSearchRes(songName);
+            this.setBarToInputKeyWord(songName)
+        }
     }
 }
 </script>
