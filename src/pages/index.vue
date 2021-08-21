@@ -31,6 +31,11 @@ export default {
         indexPageMenu,
         indexPageVideo,
     },
+    beforeRouteEnter(from,to,next){
+        next(vm=>{
+            vm.$router.push({name:'findSong1'})
+        })
+    }
 }
 </script>
 

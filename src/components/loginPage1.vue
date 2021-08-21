@@ -9,7 +9,7 @@
                </div>
            </div>
            <div class="otherLogin">
-               <span @click='$router.push({name:"loginPage2"})'>选择其他登陆模式></span>
+               <span @click='toLoginPage2'>选择其他登陆模式></span>
            </div>
     </div>
 </template>
@@ -32,9 +32,13 @@ export default {
        ...mapGetters('userModule',['getUserId']),
     },
     methods:{
-        ...mapMutations(['setDialogTableVisible']),
+        ...mapMutations(['setDialogTableVisible','setLoginPage']),
         ...mapActions('loginModule',['getLoginStatus']),
-        ...mapActions('userModule',['getUserInfo','getUserDetail',])
+        ...mapActions('userModule',['getUserInfo','getUserDetail',]),
+        toLoginPage2(){
+            //切换loginPage2组件
+           this.setLoginPage('loginPage2');
+        }
     },
     //keepalive 不会让组件走此beforeRouteEnter 所以从其他页面返回回来失败，用activated钩子
     async activated(){
@@ -130,6 +134,7 @@ export default {
         this.$nextTick(()=>{
             qrcode.makeCode(data.qrurl);
             this.loading=false;
+            //防止重复加载二维码
             this.hasEwm=true;
         });
   }
@@ -154,7 +159,7 @@ export default {
     transition: all 0.8s;
 }
 .ewmLogin{
-    margin-left: 130px;
+    margin-left: 110px;
     transition: all 0.8s;
 }
 .scanLogin{

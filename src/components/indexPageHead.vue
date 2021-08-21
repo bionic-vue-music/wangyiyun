@@ -301,7 +301,7 @@
             @open='loginOpen' @close='loginClose' :modal-append-to-body='false'>
             <transition name="loginMove" mode="out-in" appear>
                 <keep-alive include="loginPage1,loginPage2">
-                    <router-view></router-view>
+                  <component :is="getLoginPage"></component>
                 </keep-alive>
             </transition>
         </el-dialog>
@@ -317,6 +317,8 @@
     } from "vuex";
     import SearchBar from "./searchBar.vue"
     import SearchBar1 from "./searchBar1.vue"
+    import loginPage1 from "./loginPage1.vue"
+    import loginPage2 from "./loginPage2.vue"
     export default {
         name: "indexPageHead",
         data() {
@@ -332,11 +334,13 @@
         },
         components: {
             SearchBar,
-            SearchBar1
+            SearchBar1,
+            loginPage1,
+            loginPage2
         },
         computed: {
             ...mapState('searchSongsModule', ['barToInputKeyWord']),
-            ...mapGetters(['getDialogTableVisible']),
+            ...mapGetters(['getDialogTableVisible','getLoginPage']),
             ...mapGetters('userModule', ['getProfile', 'getLevel']),
             ...mapGetters('searchSongsModule', ['getBarToInputKeyWord']),
             getBarToInput: {
@@ -349,20 +353,18 @@
             }
         },
         methods: {
-            ...mapMutations(['setDialogTableVisible']),
+            ...mapMutations(['setDialogTableVisible','setLoginPage']),
             ...mapMutations('searchSongsModule', ['setBarToInputKeyWord']),
             ...mapActions('userModule', ['getUserDetail', 'getLogout', ]),
             ...mapActions('searchSongsModule', ['getHotSearch', 'getSearchRes', ]),
-            //dialog进入时加载导航
+            //dialog进入激活page1组件
             loginOpen() {
-                this.$router.push({
-                    name: 'loginPage1'
-                })
+               this.setLoginPage('loginPage1')
             },
             loginClose() {
-                this.$router.push({
-                    name: 'index'
-                });
+                // this.$router.push({
+                //     name: 'index'
+                // });
                 this.dialogTableVisible = false;
                 this.setDialogTableVisible(false);
             },

@@ -1,52 +1,30 @@
 <template>
-        <el-col :span="24" class="main">
-            <div class="nav"></div>
-            <el-col :span="18" class="autoSroll">
-                <el-carousel :interval="4000" type="card" height="200px">
-                    <el-carousel-item v-for="block in getBlocks.banners" :key="block.bannerId" class="autoSroll_item">
-                        <img :src="block.pic" alt="">
-                    </el-carousel-item>
-                </el-carousel>
-            </el-col>
+    <el-col :span="24" class="main">
+        <el-col :span="16">
+            <el-menu  class="el-menu-demo" mode="horizontal"
+                background-color="#2b2b2b" text-color="#fff" active-text-color="#ffd04b" router :default-active="$route.path">
+                <el-menu-item index="/findSong1">个性推荐</el-menu-item>
+                <el-menu-item index="-1">专属定制</el-menu-item>
+                <el-menu-item index="4">歌单</el-menu-item>
+                <el-menu-item index="5">排行榜</el-menu-item>
+                <el-menu-item index="6">歌手</el-menu-item>
+                <el-menu-item index="7">最新音乐</el-menu-item>
+            </el-menu>
         </el-col>
+        <router-view name="findSong1"></router-view>
+    </el-col>
 </template>
 <script>
-import {mapActions,mapGetters} from "vuex"
     export default {
         name: 'findSong',
-        computed:{
-            ...mapGetters('findSongModule',['getBlocks'])
-        },
-        methods:{
-            ...mapActions('findSongModule',['getHomePage']),
-        },
-         beforeRouteEnter(to,from,next){
-          next(async (vm)=>{
-              await vm.getHomePage()
-          })
-        }
     }
 </script>
 <style scoped>
-  img{
-      width: 545px;
-      height: 200px;
-  }
-  .autoSroll{
-      margin: 0px 150px;
-      /* padding: 0 100px; */
-  }
-  .main{
-     text-align: center;
-  }
-  .main /deep/ .el-carousel__button{
-      width: 7px;
-      height: 7px;
-      padding: 0;
-      border-radius: 50%;
-      background-color: rgb(141, 137, 137);
-  }
-  .main /deep/ .el-carousel__button:hover{
-      background-color: red;
-  }
+    .el-menu--horizontal{
+        border:none;
+    }
+    .el-menu--horizontal .el-menu-item{
+        font-size: 18px;
+        color: #b317179c;
+    }
 </style>
