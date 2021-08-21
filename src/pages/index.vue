@@ -8,7 +8,7 @@
                <indexPageMenu class="indexPageMenu"></indexPageMenu>
             </el-aside>
             <el-main style="padding:0px">
-                <router-view name="asd"></router-view>
+                <router-view name="findSong"></router-view>
             </el-main>
         </el-container>
         <el-container>

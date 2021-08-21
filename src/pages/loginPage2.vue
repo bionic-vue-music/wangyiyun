@@ -145,7 +145,7 @@ export default {
                     duration:3500
                 });
                 //跳转路由到index
-                this.$router.push({name:'index'});
+                this.$router.push({path:'/'});
                 //关闭dialog
                 this.setDialogTableVisible(false);
                  this.getUserLevelInfo();

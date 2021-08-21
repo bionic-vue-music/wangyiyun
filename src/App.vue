@@ -1,6 +1,6 @@
 <template>
       <transition name="initial" appear>
-        <router-view></router-view>
+        <router-view name="index"></router-view>
       </transition>
 </template>
 

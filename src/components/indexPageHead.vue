@@ -27,7 +27,7 @@
             <div>
                 <ul class="ulstyle">
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" fill="currentColor"
                             class="bi bi-chevron-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                 d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
@@ -45,7 +45,7 @@
             <div>
                 <el-form class="demo-searchForm" size="mini">
                     <el-form-item>
-                        <el-input autocomplete="off" class="searchInput" v-model="getBarToInput"
+                        <el-input autocomplete="off" class="searchInput" v-model.trim="getBarToInput"
                             prefix-icon="el-icon-search" placeholder="搜索" @focus="showSearchBar" @blur="closeSearchBar"
                             @input="closeSearchBarBykey"></el-input>
                     </el-form-item>
@@ -425,7 +425,7 @@
                     await this.getSearchRes(this.getBarToInputKeyWord);
                     //搜索结果打开
                     this.searchBar1Show = true;
-                } else {
+                } else if(this.getBarToInputKeyWord == ''){
                     this.searchBarShow = true;
                     this.searchBar1Show = false;
                 }
@@ -499,6 +499,7 @@
         /* margin-top: px; */
         cursor: pointer;
         margin-top: 18px;
+        vertical-align: bottom;
     }
 
     .maike {
@@ -743,5 +744,8 @@
         overflow-x: hidden;
         border-radius: 8px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+    }
+    .bi{
+        vertical-align: middle;
     }
 </style>
