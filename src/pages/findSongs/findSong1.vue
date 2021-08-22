@@ -4,7 +4,7 @@
         <el-col :span="18" class="autoSroll">
             <el-carousel :interval="4000" type="card" height="200px">
                 <el-carousel-item v-for="block in getBlocks.banners" :key="block.bannerId" class="autoSroll_item">
-                    <img :src="block.pic" alt="">
+                    <img :src="block.pic" alt="" lazy>
                 </el-carousel-item>
             </el-carousel>
             <div class="recSongsTitle" v-if="!findSongLoading">
@@ -13,7 +13,11 @@
             <ul class="recSongs">
                 <li v-for="(recSong,index) in getRecmBlocks" :key='recSong.id'
                     :style="(index==4||index==9) && Th5_Th10">
-                    <el-image :src="recSong.picUrl" fit='cover' style="width: 184px; height: 200px" :alt="recSong.name">
+                    <el-image :src="recSong.picUrl" fit='cover' lazy style="width: 184px; height: 200px"
+                        :alt="recSong.name">
+                        <div slot="error" class="image-slot">
+                            <i class="el-icon-picture-outline"></i>
+                        </div>
                     </el-image>
                     <div class="recSongsName">
                         <span>{{recSong.name}}</span>
@@ -41,14 +45,16 @@
                     </div>
                 </li>
             </ul>
-            <div>
                 <div class="privateContentTitle" v-if="!findSongLoading">
                     <span>独家放送></span>
                 </div>
                 <ul class="privateContent">
-                    <li v-for="(privateContent,index) in getPrivateContent" :key="privateContent.id" :style="index==2 && Th5_Th10">>
-                        <el-image :src="privateContent.picUrl"
-                            fit='fill' style="width: 305px; height: 170px">
+                    <li v-for="(privateContent,index) in getPrivateContent" :key="privateContent.id"
+                        :style="index==2 && Th5_Th10">>
+                        <el-image :src="privateContent.picUrl" fit='fill' style="width: 305px; height: 170px" lazy>
+                            <div slot="error" class="image-slot">
+                                <i class="el-icon-picture-outline"></i>
+                            </div>
                         </el-image>
                         <div class="privateContentName">
                             <span>{{privateContent.name}}</span>
@@ -71,7 +77,31 @@
                         </div>
                     </li>
                 </ul>
-            </div>
+                <div v-if="!findSongLoading" class="newSongsTitle">
+                    <span>最新音乐></span>
+                </div>
+                <ul class="newSongs">
+                    <li class="clearfloat">
+                        <el-image class="fl" src='http://p1.music.126.net/HBTGDsFd2UEYnkiANKL7Jg==/109951166302260972.jpg' style="width: 60px; height: 60px" lazy>
+
+                            <div slot="error" class="image-slot">
+                                <i class="el-icon-picture-outline"></i>
+                            </div>
+                        </el-image>
+                        <div class="fl newSongsDetail">
+                            <div>
+                                <span>123123</span>
+                            </div>
+                            <div>
+                                <span>1231asd</span>
+                                <span>wnjowjniiw</span>
+                            </div>
+                        </div>
+                        <div class="playIcon2">
+                           <i><svg t="1629609381840" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6999" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F8E6DF" p-id="7000"></path><path d="M450.699636 311.04l256 150.178909c26.903273 15.778909 34.490182 48.174545 16.942546 72.378182-3.956364 5.492364-9.053091 10.24-14.964364 14.033454l-256 164.096c-26.158545 16.779636-62.487273 11.310545-81.128727-12.218181a48.826182 48.826182 0 0 1-10.821818-30.370909V354.862545C360.727273 325.981091 386.792727 302.545455 418.909091 302.545455c11.287273 0 22.341818 2.955636 31.790545 8.494545z" fill="#F85212" p-id="7001"></path></svg></i>
+                        </div>
+                    </li>
+                </ul>
         </el-col>
     </el-col>
 </template>
@@ -80,6 +110,7 @@
         mapActions,
         mapGetters
     } from "vuex"
+    import "../../assets/nprogress.css"
     export default {
         name: 'findSong1',
         data() {
@@ -98,44 +129,85 @@
         },
         beforeRouteEnter(to, from, next) {
             next(async (vm) => {
+                vm.$NP.start();
                 //banners
                 await vm.getHomePage();
                 //推荐歌单
                 await vm.getRecSongs();
                 //独家放送
                 await vm.privateContent();
+                vm.$NP.done();
                 vm.findSongLoading = false;
             })
         }
     }
 </script>
 <style scoped>
+    .newSongsDetail div:first-child span{
+        color: rgb(218, 211, 211);
+    }
+    .playIcon2 svg{
+        width: 30px;
+        height: 30px;
+    }
+    .playIcon2{
+        position: absolute;
+        left: 5%;
+        top: 30%;
+    }
+    .newSongs{
+        margin: 0;
+        padding: 0;
+        text-align: left;
+    }
+    .newSongs li{
+        width: 33%;
+        height: 50px;
+        position: relative;
+        cursor: pointer;
+    }
+    .clearfloat::after{
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .fl{
+        float: left;
+    }
     ul {
         list-style: none;
     }
+
     li {
         border-radius: 5px;
         display: inline-block;
     }
-    img{
-         border-radius: 5px;
-    }
-    .el-image{
-         border-radius: 5px;
-    }
-    .main /deep/ .carousel__item{
-         border-radius: 5px;
-    }
-    .main /deep/ .el-carousel__mask{
-         border-radius: 5px;
-    }
-    .main /deep/ .el-carousel__item--card{
+
+    img {
         border-radius: 5px;
     }
+
+    .el-image {
+        border-radius: 5px;
+    }
+
+    .main /deep/ .carousel__item {
+        border-radius: 5px;
+    }
+
+    .main /deep/ .el-carousel__mask {
+        border-radius: 5px;
+    }
+
+    .main /deep/ .el-carousel__item--card {
+        border-radius: 5px;
+    }
+
     .autoSroll img {
         width: 600px;
         height: 200px;
     }
+
     .autoSroll {
         margin: 0px 150px;
     }
@@ -203,7 +275,8 @@
         transition: all 0.8s;
     }
 
-    .recSongsTitle,.privateContentTitle {
+    .recSongsTitle,
+    .privateContentTitle,.newSongsTitle{
         color: rgb(223, 215, 215);
         text-align: left;
         font-size: 25px;
@@ -211,9 +284,12 @@
         margin-top: 40px;
         cursor: pointer;
     }
-     .recSongsTitle :hover,.privateContentTitle :hover{
-         color: white;
-     }
+
+    .recSongsTitle :hover,
+    .privateContentTitle :hover {
+        color: white;
+    }
+
     .recSongsName {
         color: rgb(177, 171, 171);
 
@@ -222,14 +298,18 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .privateContentName{
-        color: rgb(238, 231, 231);
+
+    .privateContentName {
+        color: rgb(218, 211, 211);
     }
+
     .recSongsName span {
         font-size: 10px;
     }
 
-    .recSongsName :hover {
+    .recSongsName :hover,
+    .privateContentName:hover
+    ,.newSongsTitle:hover {
         color: white;
     }
 

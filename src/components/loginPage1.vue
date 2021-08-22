@@ -76,7 +76,7 @@ export default {
                     //退出登录页
                     //关闭dialog
                     _this.setDialogTableVisible(false);
-                     _this.$router.back() //回退获取数据
+                    this.setLoginPage('');
 
                     //欢迎提示
                     _this.$message({

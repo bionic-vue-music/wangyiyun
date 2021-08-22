@@ -7,6 +7,10 @@ import router from "./router"
 import httpPlugin from "./plugins/http"
 import store from "./store/index"
 import autoFocus from "./plugins/autoFocus"
+import NP from "./plugins/nprogress"
+
+
+Vue.use(NP);
 Vue.use(httpPlugin)
 Vue.use(ElementUI)
 Vue.use(preDefault);

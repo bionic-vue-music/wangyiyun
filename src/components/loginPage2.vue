@@ -98,7 +98,7 @@ export default {
         ...mapGetters(['getAutoLogin']),
     },
     methods:{
-        ...mapMutations(['setDialogTableVisible','setAutoLogin']),
+        ...mapMutations(['setDialogTableVisible','setAutoLogin','setLoginPage']),
         ...mapActions('userModule',['getLoginByPhone','getUserLevelInfo']),
         backTo_ewm(){
          this.$router.back(); //go(-1)回退+刷新  back()回退
@@ -145,10 +145,10 @@ export default {
                     duration:3500
                 });
                 //跳转路由到index
-                this.$router.push({path:'/'});
+                 this.setLoginPage('');
                 //关闭dialog
                 this.setDialogTableVisible(false);
-                 this.getUserLevelInfo();
+                this.getUserLevelInfo();
             }
           }else{
                 //   console.log(res);
