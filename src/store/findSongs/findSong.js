@@ -1,10 +1,12 @@
-import {homePage,recSongs,privateContent} from "../../api/findSongs/index"
+import {homePage,recMvs,recSongs,privateContent,newSongs} from "../../api/findSongs/index"
 export default{
     namespaced:true,
     state:{
         blocks:{},//首页发现block信息
         recmBlocks:[],//首页发现歌单推荐信息
-        privateContent:[]//首页独家放送信息
+        privateContent:[],//首页独家放送信息
+        newSongs:[],//推荐新音乐
+        recMv:[],//推荐mv
     },
     getters:{
         getBlocks(state){
@@ -15,6 +17,12 @@ export default{
         },
         getPrivateContent(state){
             return state.privateContent;
+        },
+        getNewSongs(state){
+            return state.newSongs;
+        },
+        getRecMv(state){
+            return state.recMv;
         }
     },
     mutations:{
@@ -26,6 +34,12 @@ export default{
         },
         setPrivateContent(state,privateContent){
             state.privateContent=privateContent
+        },
+        setNewSongs(state,newSongs){
+            state.newSongs=newSongs;
+        },
+        setRecMv(state,mv){
+            state.recMv=mv;
         }
     },
     actions:{
@@ -33,9 +47,9 @@ export default{
           let res=await homePage();
           console.log(res);
           if(!res) return;
-          let {extInfo}=res.data.data.blocks[0];
+          let {banners}=res.data;
         //   console.log(extInfo.banners);
-          commit('setBlocks',extInfo);
+          commit('setBlocks',banners);
         },
         async getRecSongs({commit}){
            let res=await recSongs();
@@ -46,6 +60,18 @@ export default{
             let res=await privateContent();
             let {result}=res.data;
             commit('setPrivateContent',result);
+        },
+        async getRecNewSongs({commit}){
+            let res=await newSongs();
+            if(!res) return;
+            let {result}=res.data;
+            commit('setNewSongs',result);
+        },
+        async getRecMvs({commit}){
+            let res =await recMvs();
+            if(!res) return;
+            let {result}=res.data;
+            commit('setRecMv',result);
         }
     }
 }

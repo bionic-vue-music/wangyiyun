@@ -3,10 +3,10 @@ import Vue from "vue"
 //说明 : 调用此接口 , 可获取APP首页信息
 export function homePage(){
     return Vue.$http({
-         url:'/homepage/block/page',
+         url:'/banner',
          method:'get',
          params:{
-             refresh:true
+             type:0
          }
     })
 }
@@ -24,6 +24,23 @@ export function recSongs(){
 export function privateContent(){
     return Vue.$http({
         url:'/personalized/privatecontent',
+        method:'get'
+    })
+}
+//说明 : 调用此接口 , 可获取推荐新音乐
+export function newSongs(){
+    return Vue.$http({
+        url:'/personalized/newsong',
+        method:'get',
+        params:{
+            limit:12
+        }
+    })
+}
+//说明 : 调用此接口 , 可获取推荐 mv
+export function recMvs(){
+    return Vue.$http({
+        url:'/personalized/mv',
         method:'get'
     })
 }
