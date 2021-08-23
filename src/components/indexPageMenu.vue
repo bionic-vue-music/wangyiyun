@@ -50,8 +50,8 @@ export default {
 </script>
 <style scoped>
   .el-menu-item{
-      height: 40px;
-      line-height: 40px;
+      height: 50px;
+      line-height: 50px;
   }
   .el-menu{
     border: none;

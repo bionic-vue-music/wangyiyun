@@ -53,10 +53,14 @@ export default {
 .el-footer{
     background-color: #1f1f22;
     position: sticky;
-    top: 0px;
+    top: 60px;
+    /* width: 100%; */
+}
+.vedio{
+    height: 66px;
 }
 .second-container{
-    height: 850px;
+    height: 738px;
     background-color: #2b2b2b;
 }
 .el-header{

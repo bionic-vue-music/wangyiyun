@@ -8,4 +8,5 @@ module.exports = {
         },
       },
     },
+    configureWebpack:{externals:'hls.js'}//忽略aplayer警告
   }

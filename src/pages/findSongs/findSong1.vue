@@ -3,7 +3,7 @@
         element-loading-spinner="el-icon-loading" element-loading-background="rgba(43, 43, 43, 0.8)">
         <el-col :span="18" class="autoSroll">
             <el-carousel :interval="4000" type="card" height="200px">
-                <el-carousel-item v-for="block in getBlocks" :key="block.targetId" class="autoSroll_item">
+                <el-carousel-item v-for="(block,index) in getBlocks" :key="block.targetId+index" class="autoSroll_item">
                     <img :src="block.imageUrl" alt="" lazy>
                 </el-carousel-item>
             </el-carousel>
@@ -12,7 +12,7 @@
                 <span>歌单推荐></span>
             </div>
             <ul class="recSongs">
-                <li v-for="(recSong,index) in getRecmBlocks" :key='recSong.id'
+                <li v-for="(recSong,index) in getRecmBlocks" :key='recSong.id+index'
                     :style="(index==4||index==9) && Th5_Th10">
                     <el-image :src="recSong.picUrl" fit='cover' lazy style="width: 184px; height: 200px"
                         :alt="recSong.name">
@@ -84,8 +84,8 @@
                 <span>最新音乐></span>
             </div>
             <ul class="newSongs">
-                <li class="clearfloat" v-for="newSong in getNewSongs" :key="newSong.id">
-                    <el-image class="fl" :src="newSong.picUrl" fit='fill' style="width: 60px; height: 60px" lazy>
+                <li class="clearfloat" v-for="(newSong,index) in getNewSongs" :key="newSong.id">
+                    <el-image class="fl" :src="newSong.picUrl" @click="playSong(newSong.id,index)" fit='fill' style="width: 60px; height: 60px" lazy>
                         <div slot="error" class="image-slot">
                             <i class="el-icon-picture-outline"></i>
                         </div>
@@ -138,6 +138,7 @@
                     </div>
                 </li>
             </ul>
+            <!-- 推荐Mv -->
             <div class="recMvTitle">
                 <span v-if="!findSongLoading">推荐MV></span>
             </div>
@@ -175,7 +176,8 @@
 <script>
     import {
         mapActions,
-        mapGetters
+        mapGetters,
+        mapMutations,
     } from "vuex"
     import "../../assets/nprogress.css"
     export default {
@@ -190,9 +192,34 @@
         },
         computed: {
             ...mapGetters('findSongModule', ['getRecMv','getBlocks', 'getRecmBlocks', 'getPrivateContent', 'getNewSongs']),
+            ...mapGetters('playSongModule',['getSongUrl',]),
+            ...mapGetters('playerModule',['getSongInfo',])
         },
         methods: {
+            ...mapMutations('playerModule',['setIsPlay']),
             ...mapActions('findSongModule', ['getRecMvs','getHomePage', 'getRecSongs', 'privateContent', 'getRecNewSongs']),
+            ...mapActions('playSongModule',['getSongUrlById']),
+            ...mapActions('playerModule',['getSong']),
+            async playSong(id,index){
+                //避免点击重复播放
+              if(id==this.getSongInfo.id) return;
+              
+              await this.getSongUrlById(id);
+
+              let song={};
+              
+              song.src=this.getSongUrl;
+              song.title=this.getNewSongs[index].name;
+              song.pic=this.getNewSongs[index].picUrl;
+              let artist=''
+              this.getNewSongs[index].song.artists.forEach(item=>{
+                  artist+=item.name;
+              });
+              song.artist=artist;
+              song.id=this.getNewSongs[index].id;
+              this.setIsPlay(true);
+              this.getSong(song);
+            }
         },
         beforeRouteEnter(to, from, next) {
             next(async (vm) => {
