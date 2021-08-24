@@ -11,7 +11,7 @@
                 <router-view name="findSong"></router-view>
             </el-main>
         </el-container>
-        <el-container>
+        <el-container class="vedio">
             <el-footer style="padding:0px">
               <indexPageVideo></indexPageVideo>
             </el-footer>
@@ -57,10 +57,11 @@ export default {
     /* width: 100%; */
 }
 .vedio{
-    height: 66px;
+    height: 100px;
+    background-color: rgb(33,33,36);
 }
 .second-container{
-    height: 738px;
+    height: 704px;
     background-color: #2b2b2b;
 }
 .el-header{

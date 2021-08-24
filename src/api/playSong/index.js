@@ -10,3 +10,13 @@ export function songUrlById(id){
         }
     })
 }
+//获取音乐歌词 
+export function songLycById(id){
+    return Vue.$http({
+        url:'/lyric',
+        method:'get',
+        params:{
+            id
+        }
+    })
+}

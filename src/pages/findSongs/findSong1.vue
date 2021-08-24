@@ -126,7 +126,7 @@
                                     v-if="newSong.song.artists.length>1">/</span></span>
                         </div>
                     </div>
-                    <div class="playIcon2">
+                    <div class="playIcon2" @click="playSong(newSong.id,index)">
                         <i><svg t="1629609381840" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="6999" width="200" height="200">
                                 <path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F8E6DF"
@@ -192,7 +192,6 @@
         },
         computed: {
             ...mapGetters('findSongModule', ['getRecMv','getBlocks', 'getRecmBlocks', 'getPrivateContent', 'getNewSongs']),
-            ...mapGetters('playSongModule',['getSongUrl',]),
             ...mapGetters('playerModule',['getSongInfo',])
         },
         methods: {
@@ -202,13 +201,9 @@
             ...mapActions('playerModule',['getSong']),
             async playSong(id,index){
                 //避免点击重复播放
+                console.log(id);
               if(id==this.getSongInfo.id) return;
-              
-              await this.getSongUrlById(id);
-
               let song={};
-              
-              song.src=this.getSongUrl;
               song.title=this.getNewSongs[index].name;
               song.pic=this.getNewSongs[index].picUrl;
               let artist=''
@@ -218,7 +213,7 @@
               song.artist=artist;
               song.id=this.getNewSongs[index].id;
               this.setIsPlay(true);
-              this.getSong(song);
+              await this.getSong(song);
             }
         },
         beforeRouteEnter(to, from, next) {

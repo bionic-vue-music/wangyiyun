@@ -1,8 +1,9 @@
 <template>
     <div>
-         <aplayer class="ss"  ref="player" @canplay="autoPlay" :music="{
+         <aplayer class="ss" :lrcType="getSongInfo.version" :show-lrc="showLrc" ref="player" @canplay="autoPlay" :music="{
                  src:getSongInfo.src||'http://music.163.com/song/media/outer/url?id=562598065.mp3',
-                 pic:getSongInfo.pic||'http://p3.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg'
+                 pic:getSongInfo.pic||'http://p3.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg',
+                 lrc:getSongInfo.lyric|| noLrcTip
            }">
     </aplayer>
     <ul class="songInfo">
@@ -26,7 +27,7 @@
         <li>
             <svg t="1629649094592" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20269" width="200" height="200"><path d="M761.158332 809.566932 728.926476 809.566932c-15.203706 0-27.4883-12.284594-27.4883-27.4883L701.438176 559.861266c-3.162371 2.554223-6.568001 5.108445-10.46015 7.419408L312.953082 801.417746c-42.813636 26.515263-77.842974 7.05452-77.842974-43.421784L235.110108 266.004038c0-50.354674 34.664449-69.207269 76.991567-41.962228l379.849388 245.326998c3.40563 2.189334 6.568001 4.621927 9.487112 7.05452L701.438176 242.772776c0-15.203706 12.284594-27.4883 27.4883-27.4883l32.231857 0c15.203706 0 27.4883 12.284594 27.4883 27.4883L788.646633 782.078632C788.646633 797.282338 776.362038 809.566932 761.158332 809.566932L761.158332 809.566932 761.158332 809.566932z" p-id="20270" fill="#ffffff"></path></svg>
         </li>
-        <li>
+        <li @click="handleShowLrc">
             <svg t="1629649114030" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21142" width="200" height="200"><path d="M448 704h192v-192h-192v192z m-32-256h256a32 32 0 0 1 32 32v256a32 32 0 0 1-32 32h-256a32 32 0 0 1-32-32v-256a32 32 0 0 1 32-32zM174.72 178.528a32 32 0 1 1 48.32-41.952l76.416 88a32 32 0 0 1-48.32 41.984L174.72 178.528z m51.264 205.952H137.6a32 32 0 1 1 0-64h120.32a32 32 0 0 1 32 32v420.672l10.272-13.568a32 32 0 0 1 51.04 38.624l-67.776 89.6c-18.528 24.448-57.504 11.36-57.504-19.328V384.48z m608.32-192.064H384a32 32 0 0 1 0-64h482.336a32 32 0 0 1 32 32V864a32 32 0 0 1-32 32h-142.56a32 32 0 1 1 0-64h110.56V192.416zM416 354.976a32 32 0 0 1 0-64h257.408a32 32 0 1 1 0 64H416z" p-id="21143" fill="#ffffff"></path></svg>
         </li>
     </ul>
@@ -45,6 +46,12 @@
     import {mapGetters,mapMutations} from "vuex"
     export default {
         name: "indexPageVideo",
+        data(){
+            return{
+                showLrc:true,
+                noLrcTip:"抱歉暂无歌词..."
+            }
+        },
         computed:{
             ...mapGetters('playerModule',['getSongInfo','getIsPlay'])
         },
@@ -66,11 +73,26 @@
                 }
                 let _this=this;
                 window.onkeydown=function(e){
+                   
                     // console.log(e);
                     if(e.keyCode==32 ){
                          _this.$refs.player.toggle();
+                         //阻止页面跳动
+                         e.preventDefault();
                     }
                 }
+            },
+            handleShowLrc(){
+                let time=0
+               if(this.showLrc){
+                  this.showLrc=false;
+                  time=this.$refs.player.audio.currentTime
+                  console.log(time);
+               } 
+               else{
+                   this.showLrc=true;
+                   this.$refs.player.audio.currentTime=time;
+               }
             }
         },
         components: {
@@ -89,15 +111,15 @@
          cursor: pointer;
      }
      .songInfo li{
-        color: rgb(228, 224, 224);
+        color: rgb(224, 228, 224);
         font-weight: bold;
      }
      .songInfo li:hover{
          color: white;
      }
      .songInfo{
-         left: 80px;
-         top: 10px;
+         left: 110px;
+         top: 20px;
      }
     .controll{
         left: 640px;
@@ -174,6 +196,25 @@
         width: 20px;
         height: 20px;
     }
+    .ss /deep/ .aplayer-lrc{
+        background-color: rgb(33,33,36);
+        border: none;
+        position: absolute;
+        top:60px;
+        left: 200px;
+        height: 20px;
+        border: none;
+        width: 80%;
+    }
+     .ss /deep/ .aplayer-lrc p{
+         color: rgb(15, 221, 170);
+         font-size: 15px;
+         font-weight: bold;
+         /* height: 16; */
+         line-height: 16px;
+         /* margin-top: 2px; */
+         /* height: 25px; */
+     }
     .ss /deep/ .aplayer-controller{
          position: absolute;
          left: 500px;

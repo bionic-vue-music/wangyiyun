@@ -1,3 +1,4 @@
+import {songUrlById,songLycById} from "../../api/playSong/index";
 export default {
     namespaced:true,
     state:{
@@ -7,6 +8,7 @@ export default {
         artist:'',
         pic:'',
         id:'',
+        version:'',
        },
        isPlay:false,
     },
@@ -27,8 +29,16 @@ export default {
       }
     },
     actions:{
-        getSong({commit},song){
-        commit('setSongInfo',song)
+        async getSong({commit},song){
+
+            let res=await songUrlById(song.id);
+            let res1=await songLycById(song.id);
+            // console.log(res);
+            if(!res) return;
+            if(!res1) return;
+            let {url}=res.data.data[0];
+            let {lyric,version}=res1.data.lrc;
+            commit('setSongInfo',{...song,src:url,lyric,version})
        }
     },
 }

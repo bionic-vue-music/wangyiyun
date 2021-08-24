@@ -18,7 +18,7 @@
                     <span>歌曲</span>
                 </div>
                 <ul>
-                    <li v-for="(song) in getSearchRes.songs" :key="song.id">
+                    <li v-for="(song,index) in getSearchRes.songs" :key="song.id" @click="playSong(song.id,index)">
                         <span>{{song.name}}</span><span>-{{song.artists[0].name}}</span></li>
                 </ul>
             </div>
@@ -73,13 +73,37 @@
 </template>
 <script>
     import {
-        mapGetters
+        mapGetters,
+        mapActions,
+        mapMutations
     } from "vuex";
     export default {
         name: 'searchBar1',
         computed: {
             ...mapGetters('searchSongsModule', ['getSearchRes']),
-        }
+            ...mapGetters('playerModule',['getSongInfo',]),
+            ...mapGetters('findSongModule', ['getNewSongs']),
+        },
+        methods:{
+            ...mapMutations('playerModule',['setIsPlay']),
+            ...mapActions('playerModule',['getSong']),
+           async playSong(id,index){
+                //避免点击重复播放
+                console.log(id);
+              if(id==this.getSongInfo.id) return;
+              let song={};
+              song.title=this.getNewSongs[index].name;
+              song.pic=this.getNewSongs[index].picUrl;
+              let artist=''
+              this.getNewSongs[index].song.artists.forEach(item=>{
+                  artist+=item.name;
+              });
+              song.artist=artist;
+              song.id=this.getNewSongs[index].id;
+              this.setIsPlay(true);
+              await this.getSong(song);
+            }
+        },
     }
 </script>
 <style scoped>
