@@ -34,7 +34,7 @@ export default {
     methods:{
         ...mapMutations(['setDialogTableVisible','setLoginPage']),
         ...mapActions('loginModule',['getLoginStatus']),
-        ...mapActions('userModule',['getUserInfo','getUserDetail',]),
+        ...mapActions('userModule',['getUserPlaylistsById','getUserDetail',]),
         toLoginPage2(){
             //切换loginPage2组件
            this.setLoginPage('loginPage2');
@@ -71,8 +71,6 @@ export default {
                 let userData=await _this.getLoginStatus();
                 let {data}=userData.data
                 if(data.code==200){
-                   
-                  
                     //退出登录页
                     //关闭dialog
                     _this.setDialogTableVisible(false);
@@ -83,10 +81,14 @@ export default {
                         title:'提示',
                         message:`欢迎你,${data.profile.nickname}`,
                         type:'success',
-                        duration:3000
+                        duration:3000,
+                        center:true
                     });
                     // by:id--获取用户详情
                    _this.getUserDetail(data.profile.userId);
+                   // by id 获取用户歌单
+                   console.log(data.profile.userId);
+                   _this.getUserPlaylistsById(data.profile.userId);
                 }
               }else if(code==800){
                  _this.$notify({

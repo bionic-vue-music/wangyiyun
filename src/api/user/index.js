@@ -25,3 +25,13 @@ export function Logout(){
          method:'get'
      })
  }
+//说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户歌单
+export function userPlaylists(uid){
+    return Vue.$http({
+        url:'/user/playlist',
+        method:'get',
+        params:{
+            uid
+        }
+    })
+}

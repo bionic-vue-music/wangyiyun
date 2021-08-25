@@ -19,7 +19,7 @@
                 </div>
                 <ul>
                     <li v-for="(song,index) in getSearchRes.songs" :key="song.id" @click="playSong(song.id,index)">
-                        <span>{{song.name}}</span><span>-{{song.artists[0].name}}</span></li>
+                        <span>{{song.name}}</span><span v-for="artist in song.artists" :key="artist.id">-{{artist.name}}</span></li>
                 </ul>
             </div>
             <div>
@@ -88,18 +88,15 @@
             ...mapMutations('playerModule',['setIsPlay']),
             ...mapActions('playerModule',['getSong']),
            async playSong(id,index){
-                //避免点击重复播放
-                console.log(id);
-              if(id==this.getSongInfo.id) return;
               let song={};
-              song.title=this.getNewSongs[index].name;
-              song.pic=this.getNewSongs[index].picUrl;
+              song.title=this.getSearchRes.songs[index].name;
+              song.pic=this.getSearchRes.songs[index].artists[0].img1v1Url;
               let artist=''
-              this.getNewSongs[index].song.artists.forEach(item=>{
+              this.getSearchRes.songs[index].artists.forEach(item=>{
                   artist+=item.name;
               });
               song.artist=artist;
-              song.id=this.getNewSongs[index].id;
+              song.id=this.getSearchRes.songs[index].id;
               this.setIsPlay(true);
               await this.getSong(song);
             }

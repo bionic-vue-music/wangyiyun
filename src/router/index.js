@@ -6,6 +6,9 @@ const index=()=>import('../pages/index.vue')
 // const loginPage2=()=>import('../pages/loginPage2.vue')
 const findSong=()=>import('../pages/findSongs/findSong.vue')
 const findSong1=()=>import('../pages/findSongs/findSong1.vue')
+const findSong3=()=>import('../pages/findSongs/findSong3.vue')
+const userCreate=()=>import('../pages/userPlaylists/userCreate.vue')
+const userSave=()=>import('../pages/userPlaylists/userSave.vue')
 
 Vue.use(vueRouter)
 const routes=[
@@ -16,8 +19,13 @@ const routes=[
         {path:'/findSong',components:{findSong},name:'findSong',children:[
           {
             path:'/findSong1',components:{findSong1},name:'findSong1'
+          },
+          {
+            path:'/findSong3',components:{findSong3},name:'findSong3'
           }
         ]},
+        {path:'/userCreate',components:{userCreate},name:'userCreate'},
+        {path:'/userSave',components:{userSave},name:'userSave'}
       ]
     },
 ];

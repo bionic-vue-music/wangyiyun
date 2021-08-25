@@ -26,14 +26,14 @@
         <div class="headSearch fl">
             <div>
                 <ul class="ulstyle">
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" fill="currentColor"
+                    <li @click="back">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-chevron-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                 d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
                         </svg>
                     </li>
-                    <li>
+                    <li @click="go">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -56,6 +56,8 @@
             <transition name="animation_searchBar" mode="out-in">
                 <!-- 搜索结果，点击直接播放，不绑定input-->
                 <SearchBar1 class="searchBar1" v-if="searchBar1Show" />
+            </transition>
+            <transition name="animation_searchBar" mode="out-in">
                 <!-- 热搜，点击绑定input，跳转路由 -->
                 <SearchBar class="searchBar" v-if="searchBarShow" v-loading='searchBarLoading'
                     element-loading-text="数据加载中..." element-loading-spinner="el-icon-loading"
@@ -301,7 +303,7 @@
             @open='loginOpen' @close='loginClose' :modal-append-to-body='false'>
             <transition name="loginMove" mode="out-in" appear>
                 <keep-alive include="loginPage1,loginPage2">
-                  <component :is="getLoginPage"></component>
+                    <component :is="getLoginPage"></component>
                 </keep-alive>
             </transition>
         </el-dialog>
@@ -340,7 +342,7 @@
         },
         computed: {
             ...mapState('searchSongsModule', ['barToInputKeyWord']),
-            ...mapGetters(['getDialogTableVisible','getLoginPage']),
+            ...mapGetters(['getDialogTableVisible', 'getLoginPage']),
             ...mapGetters('userModule', ['getProfile', 'getLevel']),
             ...mapGetters('searchSongsModule', ['getBarToInputKeyWord']),
             getBarToInput: {
@@ -353,13 +355,19 @@
             }
         },
         methods: {
-            ...mapMutations(['setDialogTableVisible','setLoginPage']),
+            ...mapMutations(['setDialogTableVisible', 'setLoginPage']),
             ...mapMutations('searchSongsModule', ['setBarToInputKeyWord']),
             ...mapActions('userModule', ['getUserDetail', 'getLogout', ]),
             ...mapActions('searchSongsModule', ['getHotSearch', 'getSearchRes', ]),
             //dialog进入激活page1组件
+            back(){
+                this.$router.back();
+            },
+            go(){
+                this.$router.go(1);
+            },
             loginOpen() {
-               this.setLoginPage('loginPage1')
+                this.setLoginPage('loginPage1')
             },
             loginClose() {
                 // this.$router.push({
@@ -427,7 +435,7 @@
                     await this.getSearchRes(this.getBarToInputKeyWord);
                     //搜索结果打开
                     this.searchBar1Show = true;
-                } else if(this.getBarToInputKeyWord == ''){
+                } else if (this.getBarToInputKeyWord == '') {
                     this.searchBarShow = true;
                     this.searchBar1Show = false;
                 }
@@ -605,6 +613,7 @@
     .animation_searchBar-enter-active {
         animation: tabBar1 0.8s;
     }
+
     @keyframes tabBar {
         0% {
             opacity: 1;
@@ -732,7 +741,7 @@
         overflow-y: scroll;
         overflow-x: hidden;
         border-radius: 8px;
-        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     }
 
     .searchBar1 {
@@ -747,7 +756,8 @@
         border-radius: 8px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
     }
-    .bi{
+
+    .bi {
         vertical-align: middle;
     }
 </style>

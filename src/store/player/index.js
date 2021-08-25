@@ -1,4 +1,5 @@
-import {songUrlById,songLycById} from "../../api/playSong/index";
+import {songUrlById,songLycById,songDetail} from "../../api/playSong/index";
+// import { Message } from 'element-ui';
 export default {
     namespaced:true,
     state:{
@@ -18,7 +19,7 @@ export default {
        },
        setIsPlay(state,val){
            state.isPlay=val;
-       }
+       },
     },
     getters:{
       getSongInfo(state){
@@ -26,19 +27,39 @@ export default {
       },
       getIsPlay(state){
            return state.isPlay;
-      }
+      },
     },
     actions:{
         async getSong({commit},song){
 
             let res=await songUrlById(song.id);
             let res1=await songLycById(song.id);
+            let res2=await songDetail(song.id);
             // console.log(res);
             if(!res) return;
             if(!res1) return;
+            if(!res2) return;
+
             let {url}=res.data.data[0];
-            let {lyric,version}=res1.data.lrc;
-            commit('setSongInfo',{...song,src:url,lyric,version})
+            let {name}=res2.data.songs[0];
+            let arName=res2.data.songs[0].ar[0].name
+            if(!res1.data.lrc){
+                // Message({
+                //     type:"error",
+                //     message:'抱歉暂无歌源...',
+                //     title:'提示',
+                //     duration:3500,
+                //     center:true
+                // });
+                // Message.close();
+                // return;
+                commit('setSongInfo',{...song,src:url,title:name,artist:arName})
+            }else{
+                let {lyric,version}=res1.data.lrc;
+           
+                commit('setSongInfo',{...song,src:url,lyric,version,title:name,artist:arName})
+            }
+           
        }
     },
 }

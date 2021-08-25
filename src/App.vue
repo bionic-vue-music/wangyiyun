@@ -2,6 +2,7 @@
       <transition name="initial" appear>
         <router-view name="index"></router-view>
       </transition>
+      
 </template>
 
 <script>
@@ -63,5 +64,9 @@ html{ */
 
 ::-webkit-scrollbar{
     display:none;
+}
+.el-popover{
+  background: rgb(54, 54, 54) !important;
+  border: none !important;
 }
 </style>

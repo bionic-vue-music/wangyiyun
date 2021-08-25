@@ -8,12 +8,19 @@
                <indexPageMenu class="indexPageMenu"></indexPageMenu>
             </el-aside>
             <el-main style="padding:0px">
-                <router-view name="findSong"></router-view>
+                 <keep-alive >
+                      <router-view name="findSong"></router-view>
+                 </keep-alive>
+                
+                 <router-view name="userCreate"></router-view>
+                 <router-view name="userSave"></router-view>
             </el-main>
         </el-container>
         <el-container class="vedio">
             <el-footer style="padding:0px">
-              <indexPageVideo></indexPageVideo>
+              <keep-alive>
+                  <indexPageVideo></indexPageVideo>
+              </keep-alive>
             </el-footer>
         </el-container>
     </el-container>
@@ -23,13 +30,16 @@
 import indexPageHead from "../components/indexPageHead.vue"
 import indexPageMenu from "../components/indexPageMenu.vue"
 import indexPageVideo from "../components/indexPageVideo.vue"
-
+import {mapGetters} from "vuex"
 export default {
     name:"index",
     components:{
         indexPageHead,
         indexPageMenu,
         indexPageVideo,
+    },
+    computed:{
+        ...mapGetters('playerModule',['getDrawer'])
     },
     beforeRouteEnter(from,to,next){
         next(vm=>{
@@ -55,16 +65,19 @@ export default {
     position: sticky;
     top: 60px;
     /* width: 100%; */
+      height: 100px !important;
 }
 .vedio{
     height: 100px;
     background-color: rgb(33,33,36);
+    z-index: 300;
 }
 .second-container{
     height: 704px;
     background-color: #2b2b2b;
+    z-index: 50;
 }
 .el-header{
-    z-index: 20;
+    z-index: 100;
 }
 </style>

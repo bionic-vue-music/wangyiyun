@@ -20,3 +20,13 @@ export function songLycById(id){
         }
     })
 }
+//说明 : 调用此接口 , 传入音乐 id(支持多个 id, 用 , 隔开), 可获得歌曲详情
+export function songDetail(ids){
+    return Vue.$http({
+        url:'/song/detail',
+        method:'get',
+        params:{
+            ids
+        }
+    })
+}

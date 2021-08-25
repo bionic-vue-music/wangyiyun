@@ -142,7 +142,8 @@ export default {
                     title:'提示',
                     message:`欢迎你,${this.getProfile[0].nickname}`,
                     type:'success',
-                    duration:3500
+                    duration:3500,
+                    center:true
                 });
                 //跳转路由到index
                  this.setLoginPage('');
@@ -156,7 +157,8 @@ export default {
                     title:'提示',
                     message:`手机号或密码错误`,
                     type:'error',
-                    duration:3500
+                    duration:3500,
+                    center:true
                 });
 
 

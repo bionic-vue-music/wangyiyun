@@ -9,7 +9,6 @@ import store from "./store/index"
 import autoFocus from "./plugins/autoFocus"
 import NP from "./plugins/nprogress"
 
-
 Vue.use(NP);
 Vue.use(httpPlugin)
 Vue.use(ElementUI)

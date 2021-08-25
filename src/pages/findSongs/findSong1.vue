@@ -3,8 +3,8 @@
         element-loading-spinner="el-icon-loading" element-loading-background="rgba(43, 43, 43, 0.8)">
         <el-col :span="18" class="autoSroll">
             <el-carousel :interval="4000" type="card" height="200px">
-                <el-carousel-item v-for="(block,index) in getBlocks" :key="block.targetId+index" class="autoSroll_item">
-                    <img :src="block.imageUrl" alt="" lazy>
+                <el-carousel-item v-for="(block,index) in getBlocks" :key="block.targetId+index" class="autoSroll_item" >
+                    <img :src="block.imageUrl" alt="" lazy @click="block.url?handleBanners(block.url):handleBanners1(block.targetId,index)">
                 </el-carousel-item>
             </el-carousel>
             <!-- 歌单推荐 -->
@@ -52,7 +52,7 @@
             </div>
             <ul class="privateContent">
                 <li v-for="(privateContent,index) in getPrivateContent" :key="privateContent.id"
-                    :style="index==2 && Th5_Th10">>
+                    :style="index==2 && Th5_Th10">
                     <el-image :src="privateContent.picUrl" fit='fill' style="width: 305px; height: 170px" lazy>
                         <div slot="error" class="image-slot">
                             <i class="el-icon-picture-outline"></i>
@@ -95,7 +95,6 @@
 
                             <span>{{newSong.name}}</span>
                             <span v-if="newSong.song.alias[0]" class="songFrom">({{newSong.song.alias[0]}}</span>
-
                         </div>
                         <div>
                             <span class="sq" v-if="!newSong.song.no"><svg t="1629613317968" class="icon"
@@ -179,7 +178,6 @@
         mapGetters,
         mapMutations,
     } from "vuex"
-    import "../../assets/nprogress.css"
     export default {
         name: 'findSong1',
         data() {
@@ -197,11 +195,10 @@
         methods: {
             ...mapMutations('playerModule',['setIsPlay']),
             ...mapActions('findSongModule', ['getRecMvs','getHomePage', 'getRecSongs', 'privateContent', 'getRecNewSongs']),
-            ...mapActions('playSongModule',['getSongUrlById']),
             ...mapActions('playerModule',['getSong']),
             async playSong(id,index){
                 //避免点击重复播放
-                console.log(id);
+              //console.log(id);
               if(id==this.getSongInfo.id) return;
               let song={};
               song.title=this.getNewSongs[index].name;
@@ -214,11 +211,23 @@
               song.id=this.getNewSongs[index].id;
               this.setIsPlay(true);
               await this.getSong(song);
-            }
+            },
+            //点击banner打开新标签
+            handleBanners(url){
+                 window.open(url,'_blank');
+            },
+             //点击banner播放
+            async handleBanners1(id,index){
+                let song={};
+                song.title=this.getBlocks[index].name;
+                song.pic=this.getBlocks[index].imageUrl;
+                song.id=id;
+                this.setIsPlay(true);
+                await this.getSong(song);
+            },
         },
         beforeRouteEnter(to, from, next) {
             next(async (vm) => {
-                vm.$NP.start();
                 //banners
                 await vm.getHomePage();
                 //推荐歌单
@@ -229,7 +238,6 @@
                 await vm.getRecNewSongs();
                 //MV推荐
                 await vm.getRecMvs();
-                vm.$NP.done();
                 vm.findSongLoading = false;
             })
         }
@@ -455,7 +463,7 @@
 
     .platIcon1 {
         position: absolute;
-        top: 25px;
+        top: 5px;
         left: 5px;
     }
 
@@ -485,7 +493,9 @@
         margin-top: 20px;
         cursor: pointer;
     }
-
+     .privateContentTitle{
+         margin-bottom: 20px;
+     }
     .recSongsTitle :hover,
     .privateContentTitle :hover {
         color: white;

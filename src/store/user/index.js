@@ -1,4 +1,4 @@
-import { userDetail ,userLevelInfo,Logout} from "../../api/user/index";
+import { userDetail ,userLevelInfo,Logout,userPlaylists} from "../../api/user/index";
 import { loginByPhone } from "../../api/login/index";
 export default{
     namespaced:true,
@@ -18,6 +18,7 @@ export default{
             vipType:'',//vip等级
            }
        ],
+       playlists:[],//歌单
        level:'',//等级
     },
     mutations:{
@@ -27,6 +28,9 @@ export default{
         setLevel(state,level){
             state.level=level;
         },
+        setUserPlaylists(state,playlists){
+            state.playlists=playlists;
+        }
     },
     getters:{
         getProfile(state){
@@ -34,6 +38,21 @@ export default{
         },
         getLevel(state){
             return state.level
+        },
+        getUserPlaylists(state){
+            return state.playlists
+        },
+        // 用户收藏歌单
+        getUserSCPlaylists(state){
+            return state.playlists.filter(item=>
+                state.profile[0].userId!=item.creator.userId
+            );
+        },
+        //用户创建歌单
+        getUserCJPlaylists(state){
+            return state.playlists.filter(item=>
+                state.profile[0].userId==item.creator.userId
+            );
         },
     },
     actions:{
@@ -76,6 +95,14 @@ export default{
         //    let {profile}=res.data
            context.commit('setProfile',profile);//传入空数据，初始化新状态
            context.commit('setLevel',''); //
+        },
+        async getUserPlaylistsById({commit},id){
+            let res=await userPlaylists(id);
+            // console.log(res);
+            if(!res) return;
+            // console.log(res);
+            let {playlist}=res.data;
+            commit('setUserPlaylists',playlist)
         }
     },
 }
