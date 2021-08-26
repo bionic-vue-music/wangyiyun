@@ -11,8 +11,24 @@ export default{
         playlisthot:[],//热门歌单分类
         highqualityPlaylist:[],//精选歌单
         playlistHighqualityTags:[],//精品歌单标签列表
+        page:{
+            total:0,
+            pno:1,
+            psize:50
+        },//网友精选歌单分页
+        page1:{
+            total:0,
+            pno:1,
+            psize:20
+        },//热门歌单分类分页
     },
     getters:{
+        getPage1(state){
+            return state.page1;
+        },
+        getPage(state){
+            return state.page;
+        },
         getPlaylistHighqualityTagsYZ(state){
             return state.playlistHighqualityTags.filter(item=>{
                 return item.category==0}
@@ -67,6 +83,12 @@ export default{
         }
     },
     mutations:{
+        setPage1(state,page){
+            state.page1=page;
+        },
+        setPage(state,page){
+            state.page=page;
+        },
         setPlaylistHighqualityTags(state,Tags){
             state.playlistHighqualityTags=Tags;
         },
@@ -126,11 +148,12 @@ export default{
             let {result}=res.data;
             commit('setRecMv',result);
         },
-        async GetPlaylists({commit},page){
+        async GetPlaylists({commit,state},page){
             let res=await topPlaylist(page);
             if(!res) return;
-            let {playlists}= res.data;
-            commit('setPlaylists',playlists)
+            let {playlists,total}= res.data;
+            commit('setPlaylists',playlists);
+            commit('setPage',{...state.page,total})
         },
         async GetPlaylistHot({commit}){
             let res=await playlisthot();
@@ -138,17 +161,18 @@ export default{
             let {tags}=res.data;
             commit('setPlaylistHot',tags)
         },
-        async GetHighqualityPlaylist({commit},page){
+        async GetHighqualityPlaylist({commit,state},page){
             let res=await highqualityPlaylist(page);
             if(!res) return;
-            let {playlists}=res.data;
+            let {playlists,total}=res.data;
             commit('setHighqualityPlaylist',playlists);
+            commit('setPage1',{...state.page1,total})
         },
         async GetPlaylistHighqualityTags({commit}){
             let res=await playlisthighqualitytags();
             if(!res) return;
             let {sub}=res.data;
-            commit('setPlaylistHighqualityTags',sub)
+            commit('setPlaylistHighqualityTags',sub);
         }
     }
 }

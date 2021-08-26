@@ -1,10 +1,9 @@
 <template>
     <div class="playlist" v-loading='playlistLoading' element-loading-text="数据加载中..."
         element-loading-spinner="el-icon-loading" element-loading-background="rgba(43, 43, 43, 0.8)">
-        <div v-if="getHighqualityPlaylist[0]" class="ssd">
+        <div v-if="getHighqualityPlaylist[0]" class="ssd" @click="TojinxuanPlaylist(getHighqualityPlaylist[0].tag)">
             <el-image fit='cover' v-if="getHighqualityPlaylist[0].coverImgUrl"
                 :src='getHighqualityPlaylist[0].coverImgUrl' style="width: 120px; height: 120px" class="fl jinpinTX">
-
             </el-image>
             <div class="fl jinpinInfo">
                 <div class="jinpinInfo_head">
@@ -24,18 +23,18 @@
                     <span>{{getHighqualityPlaylist[0].name}}</span>
                 </div>
                 <div class="jinpinInfo_foot">
-                    <span>经典永恒，岁月无声</span>
+                    <span>{{getHighqualityPlaylist[0].copywriter}}</span>
                 </div>
             </div>
         </div>
-        <div class="jinpinList clearfloat" v-if="getHighqualityPlaylist[0]" :style='{background: "url("+getHighqualityPlaylist[0].coverImgUrl+")",backgroundRepeat:"no-repeat",
+        <div class="jinpinList clearfloat" @click="TojinxuanPlaylist(getHighqualityPlaylist[0].tag)" v-if="getHighqualityPlaylist[0]" :style='{background: "url("+getHighqualityPlaylist[0].coverImgUrl+")",backgroundRepeat:"no-repeat",
            backgroundSize: "cover",backgroundPosition:"center"}'>
         </div>
         <div class="playlistBody">
             <div class="body_head clearfloat" v-if="GetPlaylistHot">
-                <el-popover popper-class='myProve'  v-model="visible" placement="right" width="700" trigger="click">
-                    <div class="catHead" v-if="GetPlaylistHighqualityTags">
-                        <span @click="showAllPlaylist">全部歌单></span>
+                <el-popover popper-class='myProve' v-model="visible" placement="right" width="700" trigger="click">
+                    <div class="catHead">
+                        <span @click="showAllPlaylist" v-if="!playlistLoading">全部歌单></span>
                     </div>
                     <div class="catBody">
                         <ul>
@@ -95,7 +94,8 @@
                                 </span>
                                 <span class="tagName">风格</span>
                             </li>
-                            <li v-for="tag in getPlaylistHighqualityTagsSTYLE" :key="tag.id" @click="handleTag(tag.name)">
+                            <li v-for="tag in getPlaylistHighqualityTagsSTYLE" :key="tag.id"
+                                @click="handleTag(tag.name)">
                                 <span>{{tag.name}}</span>
                                 <span class="hot" v-if="tag.type==0">
                                     <i>
@@ -206,7 +206,8 @@
                             </li>
                         </ul>
                     </div>
-                    <el-button slot="reference" type='info' class="categoryBtn"><span>{{tagName? tagName+'>': '全部歌单>'}}</span></el-button>
+                    <el-button slot="reference" type='info' class="categoryBtn">
+                        <span>{{tagName? tagName+'>': '全部歌单>'}}</span></el-button>
                 </el-popover>
                 <div class="head_right fr">
                     <ul>
@@ -218,7 +219,7 @@
             </div>
             <div class="body_body">
                 <ul>
-                    <li v-for="(playlist,index) in getPlaylists" :key="playlist.id" :style="index==0 && firstPlaylist">
+                    <li v-for="(playlist,index) in getPlaylists" :key="index" :style="index==0 && firstPlaylist">
                         <el-image style="width: 175px; height: 175px" :src="playlist.coverImgUrl" fit='cover' lazy>
                         </el-image>
                         <div class="playlistName">
@@ -262,12 +263,16 @@
                 </ul>
             </div>
         </div>
+        <el-pagination v-if="!playlistLoading" :background="true" layout="prev, pager, next" :total="getPage.total"
+            :page-size='getPage.psize' :current-page='getPage.pno' @current-change="handleCurrentChange">
+        </el-pagination>
     </div>
 </template>
 <script>
     import {
         mapActions,
-        mapGetters
+        mapGetters,
+        mapMutations
     } from "vuex"
     export default {
         name: 'findSong3',
@@ -277,30 +282,52 @@
                     'margin-top': '0px'
                 },
                 playlistLoading: true,
-                tagName:'',
-                visible:false,
+                tagName: '',
+                visible: false,
             }
         },
         methods: {
+            ...mapMutations('findSongModule', ['setPage']),
             ...mapActions('findSongModule', ['GetPlaylists', 'GetPlaylistHot',
                 'GetHighqualityPlaylist', 'GetPlaylistHighqualityTags'
             ]),
-            async handleTag(tag){
-               if(this.tagName==tag) return;
-               this.tagName=tag;
-               this.visible=false;
-               this.playlistLoading=true;
-               await this.GetHighqualityPlaylist({cat:tag})
-               await this.GetPlaylists({cat:tag});
-               this.playlistLoading=false;
+            TojinxuanPlaylist(tag){
+                this.$router.push({name:'jinxuanPlaylist',query:{tag}})
             },
-            async showAllPlaylist(){
-               await this.GetHighqualityPlaylist({});
-               await this.GetPlaylists({});
+            async handleCurrentChange(val) {
+                //    console.log(val);
+                this.setPage({
+                    ...this.getPage,
+                    pno: val
+                });
+                this.playlistLoading = true;
+                await this.GetPlaylists({
+                    offset: (val - 1) * 50
+                });
+                this.playlistLoading = false;
+            },
+            async handleTag(tag) {
+                if (this.tagName == tag) return;
+                this.visible = false;
+                this.playlistLoading = true;
+                await this.GetHighqualityPlaylist({
+                    cat: tag
+                })
+                await this.GetPlaylists({
+                    cat: tag
+                });
+                this.tagName = tag;
+                this.playlistLoading = false;
+            },
+            async showAllPlaylist() {
+                await this.GetHighqualityPlaylist({});
+                await this.GetPlaylists({
+                    limit: this.getPage.total
+                });
             },
         },
         computed: {
-            ...mapGetters('findSongModule', ['getPlaylists',
+            ...mapGetters('findSongModule', ['getPage', 'getPlaylists',
                 'getPlaylistHot', 'getHighqualityPlaylist', 'getPlaylistHighqualityTagsYZ',
                 'getPlaylistHighqualityTagsSTYLE', 'getPlaylistHighqualityTagsCJ',
                 'getPlaylistHighqualityTagsQG', 'getPlaylistHighqualityTagsZT'
@@ -322,11 +349,29 @@
     }
 </script>
 <style scoped>
-    .ssd{
+    .playlist /deep/ .el-pager li {
+        background-color: rgb(43, 43, 43);
+    }
+
+    .playlist /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background-color: rgb(236, 65, 65);
+    }
+
+    .playlist /deep/ .btn-prev,
+    .playlist /deep/ .btn-next {
+        background-color: rgb(56, 56, 56);
+    }
+
+    .el-pagination {
+        text-align: center;
+    }
+    .ssd {
         height: 120px;
         position: absolute;
         z-index: 30;
+        cursor: pointer;
     }
+
     .catBody svg {
         width: 20px;
         height: 20px;
@@ -339,7 +384,7 @@
 
     .catBody ul li {
         cursor: pointer;
-        
+
     }
 
     .catBody ul li span {
@@ -349,9 +394,11 @@
         padding: 0 5px;
         color: rgb(228, 214, 214);
     }
-    .tagName{
+
+    .tagName {
         color: rgb(129, 125, 125) !important;
     }
+
     .catBody ul li span:hover {
         color: rgb(225, 58, 55);
     }
@@ -361,9 +408,11 @@
         width: 15px;
         height: 15px;
     }
-    .playlistUserName{
+
+    .playlistUserName {
         text-shadow: 5px -2px 2px rgb(7, 1, 1);
     }
+
     .catHead {
         height: 30px;
         border-bottom: 1px solid rgb(136, 132, 132);
@@ -389,9 +438,12 @@
         line-height: 25px;
 
     }
-    .jinpinInfo_body span:hover,.jinpinInfo_foot span:hover{
+
+    .jinpinInfo_body span:hover,
+    .jinpinInfo_foot span:hover {
         color: rgb(225, 58, 55);
     }
+
     .jinpinInfo_foot {
         color: rgb(185, 182, 182);
         font-size: 10px;
@@ -400,7 +452,7 @@
     .jinpinInfo_head span {
         color: gold;
         padding: 0 5px;
-    
+
     }
 
     .jinpinInfo_head {
@@ -577,7 +629,7 @@
         height: 150px;
         cursor: pointer;
         border-radius: 5px;
-         filter: blur(10px);
+        filter: blur(10px);
     }
 
     .body_body li {
@@ -594,9 +646,10 @@
 
     .el-image {
         border-radius: 5px;
-         filter: blur(0px) !important;
+        filter: blur(0px) !important;
     }
-        @keyframes tabBar {
+
+    @keyframes tabBar {
         0% {
             opacity: 1;
             transform: translateX(0px);

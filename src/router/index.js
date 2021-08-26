@@ -7,6 +7,7 @@ const index=()=>import('../pages/index.vue')
 const findSong=()=>import('../pages/findSongs/findSong.vue')
 const findSong1=()=>import('../pages/findSongs/findSong1.vue')
 const findSong3=()=>import('../pages/findSongs/findSong3.vue')
+const jinxuanPlaylist=()=>import('../pages/findSongs/jinxuanPlaylist.vue')
 const userCreate=()=>import('../pages/userPlaylists/userCreate.vue')
 const userSave=()=>import('../pages/userPlaylists/userSave.vue')
 
@@ -22,6 +23,9 @@ const routes=[
           },
           {
             path:'/findSong3',components:{findSong3},name:'findSong3'
+          },
+          {
+            path:'/jinxuanPlaylist',components:{jinxuanPlaylist},name:'jinxuanPlaylist'
           }
         ]},
         {path:'/userCreate',components:{userCreate},name:'userCreate'},

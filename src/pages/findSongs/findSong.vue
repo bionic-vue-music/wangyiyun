@@ -19,6 +19,7 @@
                    <keep-alive>
                     <router-view name="findSong1"></router-view>
                     <router-view name="findSong3"></router-view>
+                    <router-view name="jinxuanPlaylist"></router-view>
                 </keep-alive>
                 </transition>
             </div>
