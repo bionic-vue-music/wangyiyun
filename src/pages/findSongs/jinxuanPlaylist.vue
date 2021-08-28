@@ -10,7 +10,7 @@
                 <el-popover popper-class='myProve' v-model="visible" placement="bottom" width="400" trigger="click">
                     
                    <div class="tagHead">
-                        <span @click="showAll">全部歌单</span>
+                        <span @click="showAll">全部歌单></span>
                    </div>
                    <ul>
                      <li v-for="tag in getPlaylistHighqualityTags" :key="tag.id" class="tagLi" @click="changeTag(tag.name)">
@@ -18,7 +18,7 @@
                      </li>
                    </ul>
                     <el-button slot="reference" type='info' class="categoryBtn" size='mini'>
-                        <span v-if="$route.query.tag">{{tagName? tagName+'>': $route.query.tag+'>'}}</span></el-button>
+                        <span v-if="$route.query.tag">{{tagName? tagName+'>': '全部歌单>'}}</span></el-button>
                 </el-popover>
             </div>
         </div>
@@ -97,8 +97,13 @@
             ...mapMutations('findSongModule',['setPage1']),
             async showAll(){
                 this.visible = false;
+                this.tagName="";
                 this.loading = true;
                 await this.GetHighqualityPlaylist({});
+                this.setPage1({
+                    ...this.getPage1,
+                    pno: 1
+                });
                 this.loading = false;
             },
             async changeTag(tag){
@@ -109,6 +114,10 @@
                 await this.GetHighqualityPlaylist({
                     cat: tag
                 })
+                 this.setPage1({
+                    ...this.getPage1,
+                    pno: 1
+                });
                 this.tagName = tag;
                 this.loading = false;
             },
@@ -129,7 +138,8 @@
         beforeRouteEnter(from, to, next) {
             next(async (vm) => {
                 //获取所有精品歌单列表
-                await vm.GetHighqualityPlaylist({cat:from.query.tag});
+                vm.tagName=from.query.tag;
+                await vm.GetHighqualityPlaylist({cat:from.query.tag,});
                 await vm.GetPlaylistHighqualityTags()
                 vm.loading = false;
             })

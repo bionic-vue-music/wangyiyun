@@ -9,7 +9,7 @@
             </el-carousel>
             <!-- 歌单推荐 -->
             <div class="recSongsTitle" v-if="!findSongLoading">
-                <span>歌单推荐></span>
+                <span @click="toJInxuan">歌单推荐></span>
             </div>
             <ul class="recSongs">
                 <li v-for="(recSong,index) in getRecmBlocks" :key='recSong.id+index'
@@ -225,6 +225,9 @@
                 this.setIsPlay(true);
                 await this.getSong(song);
             },
+            toJInxuan(){
+                this.$router.push({name:'findSong3'});
+            }
         },
         beforeRouteEnter(to, from, next) {
             next(async (vm) => {

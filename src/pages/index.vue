@@ -10,8 +10,8 @@
             <el-main style="padding:0px">
                  <keep-alive >
                       <router-view name="findSong"></router-view>
+                      <router-view name="playlist"></router-view>
                  </keep-alive>
-                
                  <router-view name="userCreate"></router-view>
                  <router-view name="userSave"></router-view>
             </el-main>

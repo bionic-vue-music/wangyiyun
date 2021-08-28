@@ -1,4 +1,5 @@
-import {playlisthighqualitytags,highqualityPlaylist,playlisthot,homePage,recMvs,recSongs,privateContent,newSongs,topPlaylist} from "../../api/findSongs/index"
+import {playlistDetail,playlisthighqualitytags,highqualityPlaylist,playlisthot,homePage,recMvs,recSongs,privateContent,newSongs,topPlaylist} from "../../api/findSongs/index"
+import {songDetail} from '../../api/playSong/index'
 export default{
     namespaced:true,
     state:{
@@ -19,10 +20,18 @@ export default{
         page1:{
             total:0,
             pno:1,
-            psize:20
+            psize:50
         },//热门歌单分类分页
+        playlistDetail:[],//歌单详情
+        tracks:[]//歌单歌曲
     },
     getters:{
+        getTracks(state){
+            return state.tracks;
+        },
+        getPlaylistDetail(state){
+           return state.playlistDetail;
+        },
         getPage1(state){
             return state.page1;
         },
@@ -83,6 +92,12 @@ export default{
         }
     },
     mutations:{
+        setTracks(state,ids){
+            state.tracks=ids;
+        },
+        setPlaylistDetail(state,playlist){
+            state.playlistDetail=playlist;
+        },
         setPage1(state,page){
             state.page1=page;
         },
@@ -173,6 +188,18 @@ export default{
             if(!res) return;
             let {sub}=res.data;
             commit('setPlaylistHighqualityTags',sub);
+        },
+        async GetPlaylistDetail({commit},id){
+            let res=await playlistDetail(id);
+            if(!res) return;
+            let {playlist} =res.data;
+            let songIds=[];
+            playlist.trackIds.forEach(item=>songIds.push(item.id));
+            let res1=await songDetail(songIds.toString())
+            if(!res1) return;
+            let {songs}=res1.data;
+            commit('setTracks',songs);
+            commit('setPlaylistDetail',playlist);
         }
     }
 }

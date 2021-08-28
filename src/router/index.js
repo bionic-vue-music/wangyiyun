@@ -10,7 +10,7 @@ const findSong3=()=>import('../pages/findSongs/findSong3.vue')
 const jinxuanPlaylist=()=>import('../pages/findSongs/jinxuanPlaylist.vue')
 const userCreate=()=>import('../pages/userPlaylists/userCreate.vue')
 const userSave=()=>import('../pages/userPlaylists/userSave.vue')
-
+const playlist=()=>import('../pages/playlist.vue')
 Vue.use(vueRouter)
 const routes=[
     {path:'/',components:{index},name:'index',
@@ -29,7 +29,8 @@ const routes=[
           }
         ]},
         {path:'/userCreate',components:{userCreate},name:'userCreate'},
-        {path:'/userSave',components:{userSave},name:'userSave'}
+        {path:'/userSave',components:{userSave},name:'userSave'},
+        {path:'/playlist',components:{playlist},name:'playlist'}
       ]
     },
 ];

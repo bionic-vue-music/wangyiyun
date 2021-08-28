@@ -87,18 +87,9 @@
         methods:{
             ...mapMutations('playerModule',['setIsPlay']),
             ...mapActions('playerModule',['getSong']),
-           async playSong(id,index){
-              let song={};
-              song.title=this.getSearchRes.songs[index].name;
-              song.pic=this.getSearchRes.songs[index].artists[0].img1v1Url;
-              let artist=''
-              this.getSearchRes.songs[index].artists.forEach(item=>{
-                  artist+=item.name;
-              });
-              song.artist=artist;
-              song.id=this.getSearchRes.songs[index].id;
+           async playSong(id){
               this.setIsPlay(true);
-              await this.getSong(song);
+              await this.getSong({id});
             }
         },
     }

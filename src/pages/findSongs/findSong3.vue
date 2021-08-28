@@ -27,14 +27,17 @@
                 </div>
             </div>
         </div>
-        <div class="jinpinList clearfloat" @click="TojinxuanPlaylist(getHighqualityPlaylist[0].tag)" v-if="getHighqualityPlaylist[0]" :style='{background: "url("+getHighqualityPlaylist[0].coverImgUrl+")",backgroundRepeat:"no-repeat",
+        <div class="outer">
+            <div class="jinpinList clearfloat" @click="TojinxuanPlaylist(getHighqualityPlaylist[0].tag)"
+                v-if="getHighqualityPlaylist[0]" :style='{background: "url("+getHighqualityPlaylist[0].coverImgUrl+")",backgroundRepeat:"no-repeat",
            backgroundSize: "cover",backgroundPosition:"center"}'>
+            </div>
         </div>
         <div class="playlistBody">
             <div class="body_head clearfloat" v-if="GetPlaylistHot">
                 <el-popover popper-class='myProve' v-model="visible" placement="right" width="700" trigger="click">
                     <div class="catHead">
-                        <span @click="showAllPlaylist" v-if="!playlistLoading">全部歌单></span>
+                        <span class="showAll" @click="showAllPlaylist" v-if="!playlistLoading">全部歌单></span>
                     </div>
                     <div class="catBody">
                         <ul>
@@ -206,12 +209,14 @@
                             </li>
                         </ul>
                     </div>
-                    <el-button slot="reference" type='info' class="categoryBtn">
-                        <span>{{tagName? tagName+'>': '全部歌单>'}}</span></el-button>
+                    <el-button slot="reference" type='info' class="categoryBtn" v-if="!playlistLoading">
+                        <span>{{tagName? tagName+'>': '全部歌单>'}}</span>
+                    </el-button>
                 </el-popover>
                 <div class="head_right fr">
                     <ul>
-                        <li v-for="hot in getPlaylistHot" :key="hot.id" @click="handleTag(hot.name)">
+                        <li v-for="hot in getPlaylistHot" :key="hot.id" @click="handleTag(hot.name)"
+                            :style="hot.name==tagName && acitiveTag">
                             <span>{{hot.name}}</span>
                         </li>
                     </ul>
@@ -219,7 +224,8 @@
             </div>
             <div class="body_body">
                 <ul>
-                    <li v-for="(playlist,index) in getPlaylists" :key="index" :style="index==0 && firstPlaylist">
+                    <li @click="toPlaylist(playlist.id)" v-for="(playlist,index) in getPlaylists" :key="index"
+                        :style="index==0 && firstPlaylist">
                         <el-image style="width: 175px; height: 175px" :src="playlist.coverImgUrl" fit='cover' lazy>
                         </el-image>
                         <div class="playlistName">
@@ -284,6 +290,9 @@
                 playlistLoading: true,
                 tagName: '',
                 visible: false,
+                acitiveTag: {
+                    'border-bottom': '1px solid rgb(236, 65, 65)'
+                }
             }
         },
         methods: {
@@ -291,8 +300,13 @@
             ...mapActions('findSongModule', ['GetPlaylists', 'GetPlaylistHot',
                 'GetHighqualityPlaylist', 'GetPlaylistHighqualityTags'
             ]),
-            TojinxuanPlaylist(tag){
-                this.$router.push({name:'jinxuanPlaylist',query:{tag}})
+            TojinxuanPlaylist(tag) {
+                this.$router.push({
+                    name: 'jinxuanPlaylist',
+                    query: {
+                        tag
+                    }
+                })
             },
             async handleCurrentChange(val) {
                 //    console.log(val);
@@ -316,15 +330,34 @@
                 await this.GetPlaylists({
                     cat: tag
                 });
+                this.setPage({
+                    ...this.getPage,
+                    pno: 1
+                });
                 this.tagName = tag;
                 this.playlistLoading = false;
             },
             async showAllPlaylist() {
+                this.playlistLoading = true;
                 await this.GetHighqualityPlaylist({});
                 await this.GetPlaylists({
                     limit: this.getPage.total
                 });
+                this.setPage({
+                    ...this.getPage,
+                    pno: 1
+                });
+                this.playlistLoading = false;
             },
+            toPlaylist(id) {
+                console.log(id);
+                this.$router.push({
+                    name: 'playlist',
+                    query: {
+                        id
+                    }
+                });
+            }
         },
         computed: {
             ...mapGetters('findSongModule', ['getPage', 'getPlaylists',
@@ -349,6 +382,14 @@
     }
 </script>
 <style scoped>
+    .outer {
+        overflow: hidden;
+    }
+
+    .showAll {
+        cursor: pointer;
+    }
+
     .playlist /deep/ .el-pager li {
         background-color: rgb(43, 43, 43);
     }
@@ -365,6 +406,7 @@
     .el-pagination {
         text-align: center;
     }
+
     .ssd {
         height: 120px;
         position: absolute;
@@ -629,7 +671,7 @@
         height: 150px;
         cursor: pointer;
         border-radius: 5px;
-        filter: blur(10px);
+        filter: blur(20px);
     }
 
     .body_body li {

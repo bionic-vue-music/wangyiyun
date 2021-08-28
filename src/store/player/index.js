@@ -42,7 +42,8 @@ export default {
 
             let {url}=res.data.data[0];
             let {name}=res2.data.songs[0];
-            let arName=res2.data.songs[0].ar[0].name
+            let arName=res2.data.songs[0].ar[0].name;
+            let pic=res2.data.songs[0].al.picUrl
             if(!res1.data.lrc){
                 // Message({
                 //     type:"error",
@@ -53,11 +54,11 @@ export default {
                 // });
                 // Message.close();
                 // return;
-                commit('setSongInfo',{...song,src:url,title:name,artist:arName})
+                commit('setSongInfo',{...song,src:url,title:name,artist:arName,pic})
             }else{
                 let {lyric,version}=res1.data.lrc;
            
-                commit('setSongInfo',{...song,src:url,lyric,version,title:name,artist:arName})
+                commit('setSongInfo',{...song,src:url,lyric,version,title:name,artist:arName,pic})
             }
            
        }

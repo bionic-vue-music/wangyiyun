@@ -361,7 +361,7 @@
             ...mapActions('searchSongsModule', ['getHotSearch', 'getSearchRes', ]),
             //dialog进入激活page1组件
             back(){
-                this.$router.back();
+                this.$router.go(-1);
             },
             go(){
                 this.$router.go(1);
