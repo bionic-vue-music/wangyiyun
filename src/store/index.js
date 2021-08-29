@@ -11,7 +11,7 @@ Vue.use(vuex);
 export default new vuex.Store({
   state:{
     dialogTableVisible:false,//dialog显示
-    loginPage:'',//登录动态组件
+    loginPage:'loginPage1',//登录动态组件
   },
   mutations:{
     setDialogTableVisible(state,dialogTableVisible){

@@ -62,7 +62,7 @@
                     <span>歌单</span>
                 </div>
                 <ul>
-                    <li v-for="playlist in getSearchRes.playlists" :key='playlist.id'>{{playlist.name}}</li>
+                    <li v-for="playlist in getSearchRes.playlists" :key='playlist.id' @click="toPlaylist(playlist.id)">{{playlist.name}}</li>
                 </ul>
             </div>
         </div>
@@ -87,9 +87,18 @@
         methods:{
             ...mapMutations('playerModule',['setIsPlay']),
             ...mapActions('playerModule',['getSong']),
-           async playSong(id){
+            async playSong(id){
               this.setIsPlay(true);
               await this.getSong({id});
+            },
+            toPlaylist(id) {
+                // console.log(id);
+                this.$router.push({
+                    name: 'playlist',
+                    query: {
+                        id
+                    }
+                });
             }
         },
     }

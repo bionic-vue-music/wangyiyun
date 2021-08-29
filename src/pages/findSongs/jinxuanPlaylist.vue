@@ -24,7 +24,7 @@
         </div>
         <div class="body" v-if="getHighqualityPlaylist">
             <ul>
-                <li v-for="p in getHighqualityPlaylist" :key="p.id" class="clearfloat playlistLi">
+                <li v-for="p in getHighqualityPlaylist" :key="p.id" class="clearfloat playlistLi" @click="toPlaylist(p.id)">
                     <div class="fl image">
                         <el-image fit='cover' :src="p.coverImgUrl" style="width: 120px; height: 120px"></el-image>
                     </div>
@@ -95,6 +95,15 @@
         methods: {
             ...mapActions('findSongModule', ['GetHighqualityPlaylist','GetPlaylistHighqualityTags']),
             ...mapMutations('findSongModule',['setPage1']),
+            toPlaylist(id) {
+                // console.log(id);
+                this.$router.push({
+                    name: 'playlist',
+                    query: {
+                        id
+                    }
+                });
+            },
             async showAll(){
                 this.visible = false;
                 this.tagName="";

@@ -102,7 +102,7 @@
                                         </svg></i>
                                     <span>会员中心</span>
                                     <span v-if="!getProfile[0].vipType" class="noVip">未订购</span>
-                                    <span v-else>getProfile[0].vipType</span>
+                                    <span v-else>{{getProfile[0].vipType}}</span>
                                 </template>
                             </el-submenu>
                             <el-submenu index="2">

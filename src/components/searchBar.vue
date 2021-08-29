@@ -2,7 +2,7 @@
     <div>
         <span class="title">热搜榜</span>
         <ul>
-            <li v-for="(song,index) in getHotSongs" :key="song.score"  @click='getSongsInfo($event)'>
+            <li v-for="(song,index) in getHotSongs" :key="song.score+index"  @click='getSongsInfo($event)'>
                 <div class="index">
                     <span :style="index<=2 && oneToThree">
                       {{index+1}}

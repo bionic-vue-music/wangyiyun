@@ -13,7 +13,7 @@
             </div>
             <ul class="recSongs">
                 <li v-for="(recSong,index) in getRecmBlocks" :key='recSong.id+index'
-                    :style="(index==4||index==9) && Th5_Th10">
+                    :style="(index==4||index==9) && Th5_Th10" @click="toPlaylist(recSong.id)">
                     <el-image :src="recSong.picUrl" fit='cover' lazy style="width: 184px; height: 200px"
                         :alt="recSong.name">
                         <div slot="error" class="image-slot">
@@ -196,6 +196,15 @@
             ...mapMutations('playerModule',['setIsPlay']),
             ...mapActions('findSongModule', ['getRecMvs','getHomePage', 'getRecSongs', 'privateContent', 'getRecNewSongs']),
             ...mapActions('playerModule',['getSong']),
+            toPlaylist(id) {
+                // console.log(id);
+                this.$router.push({
+                    name: 'playlist',
+                    query: {
+                        id
+                    }
+                });
+            },
             async playSong(id,index){
                 //避免点击重复播放
               //console.log(id);

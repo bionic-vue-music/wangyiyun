@@ -22,7 +22,7 @@
            <el-input v-model.trim="loginPhone.phone" placeholder="请输入手机号码" clearable></el-input>
          </el-form-item>
          <el-form-item prop="password" >
-            <el-input type="password" prop="password" placeholder="请输入密码" clearable v-model.trim="loginPhone.password" prefix-icon="el-icon-key"></el-input>
+            <el-input type="password" show-password prop="password" placeholder="请输入密码" clearable v-model.trim="loginPhone.password" prefix-icon="el-icon-key"></el-input>
         </el-form-item>
         <el-form-item>
             <el-checkbox label="自动登录" name="type" ></el-checkbox>
@@ -99,9 +99,10 @@ export default {
     },
     methods:{
         ...mapMutations(['setDialogTableVisible','setAutoLogin','setLoginPage']),
-        ...mapActions('userModule',['getLoginByPhone','getUserLevelInfo']),
+        ...mapActions('userModule',['getLoginByPhone','getUserLevelInfo','getUserPlaylistsById']),
+        //切换二维码登录
         backTo_ewm(){
-         this.$router.back(); //go(-1)回退+刷新  back()回退
+        this.setLoginPage('loginPage1');
         },
         //表单提交
         async onSubmit(){
@@ -145,8 +146,9 @@ export default {
                     duration:3500,
                     center:true
                 });
+                this.getUserPlaylistsById(res.data.account.id)
                 //跳转路由到index
-                 this.setLoginPage('');
+                this.setLoginPage('');
                 //关闭dialog
                 this.setDialogTableVisible(false);
                 this.getUserLevelInfo();

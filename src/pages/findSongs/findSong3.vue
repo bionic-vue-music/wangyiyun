@@ -209,7 +209,7 @@
                             </li>
                         </ul>
                     </div>
-                    <el-button slot="reference" type='info' class="categoryBtn" v-if="!playlistLoading">
+                    <el-button slot="reference" type='info' class="categoryBtn" v-if="getPlaylistHighqualityTagsZT">
                         <span>{{tagName? tagName+'>': '全部歌单>'}}</span>
                     </el-button>
                 </el-popover>
@@ -350,7 +350,7 @@
                 this.playlistLoading = false;
             },
             toPlaylist(id) {
-                console.log(id);
+                // console.log(id);
                 this.$router.push({
                     name: 'playlist',
                     query: {

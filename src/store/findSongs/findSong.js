@@ -27,7 +27,18 @@ export default{
     },
     getters:{
         getTracks(state){
-            return state.tracks;
+           return function(words){ //getters传参 返回函数(闭包)
+                if(!words){  
+                    return state.tracks;
+                }else{
+                    return state.tracks.filter(item=>{
+                        let songers='';
+                        item.ar.forEach(a=>songers+=a.name);
+                        return item.name.includes(words) || item.al.name.includes(words) || songers.includes(words)
+                     }
+                    )
+                }
+            }
         },
         getPlaylistDetail(state){
            return state.playlistDetail;
@@ -197,6 +208,7 @@ export default{
             playlist.trackIds.forEach(item=>songIds.push(item.id));
             let res1=await songDetail(songIds.toString())
             if(!res1) return;
+            console.log(res1);
             let {songs}=res1.data;
             commit('setTracks',songs);
             commit('setPlaylistDetail',playlist);
