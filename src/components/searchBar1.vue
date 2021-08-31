@@ -19,7 +19,8 @@
                 </div>
                 <ul>
                     <li v-for="(song,index) in getSearchRes.songs" :key="song.id" @click="playSong(song.id,index)">
-                        <span>{{song.name}}</span><span v-for="artist in song.artists" :key="artist.id">-{{artist.name}}</span></li>
+                        <span>{{song.name}}</span><span v-for="artist in song.artists"
+                            :key="artist.id">-{{artist.name}}</span></li>
                 </ul>
             </div>
             <div>
@@ -48,7 +49,8 @@
                     <span>专辑</span>
                 </div>
                 <ul>
-                    <li v-for="album in getSearchRes.albums" :key="album.id">{{album.name}}</li>
+                    <li @click="toAlbum(album.id)" v-for="album in getSearchRes.albums" :key="album.id">{{album.name}}
+                    </li>
                 </ul>
             </div>
             <div>
@@ -62,7 +64,8 @@
                     <span>歌单</span>
                 </div>
                 <ul>
-                    <li v-for="playlist in getSearchRes.playlists" :key='playlist.id' @click="toPlaylist(playlist.id)">{{playlist.name}}</li>
+                    <li v-for="playlist in getSearchRes.playlists" :key='playlist.id' @click="toPlaylist(playlist.id)">
+                        {{playlist.name}}</li>
                 </ul>
             </div>
         </div>
@@ -81,15 +84,17 @@
         name: 'searchBar1',
         computed: {
             ...mapGetters('searchSongsModule', ['getSearchRes']),
-            ...mapGetters('playerModule',['getSongInfo',]),
+            ...mapGetters('playerModule', ['getSongInfo', ]),
             ...mapGetters('findSongModule', ['getNewSongs']),
         },
-        methods:{
-            ...mapMutations('playerModule',['setIsPlay']),
-            ...mapActions('playerModule',['getSong']),
-            async playSong(id){
-              this.setIsPlay(true);
-              await this.getSong({id});
+        methods: {
+            ...mapMutations('playerModule', ['setIsPlay']),
+            ...mapActions('playerModule', ['getSong']),
+            async playSong(id) {
+                this.setIsPlay(true);
+                await this.getSong({
+                    id
+                });
             },
             toPlaylist(id) {
                 // console.log(id);
@@ -99,7 +104,15 @@
                         id
                     }
                 });
-            }
+            },
+            toAlbum(id) {
+                this.$router.push({
+                    name: 'album',
+                    query: {
+                        id
+                    }
+                });
+            },
         },
     }
 </script>

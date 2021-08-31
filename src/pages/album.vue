@@ -1,30 +1,22 @@
 <template>
     <div class="playlist">
-        <div class="head clearfloat" v-if="getPlaylistDetail" v-loading='loading' element-loading-text="数据加载中..."
+        <div class="head clearfloat" v-if="getAlbum" v-loading='loading' element-loading-text="数据加载中..."
             element-loading-spinner="el-icon-loading" element-loading-background="rgb(43, 43, 43)">
             <div class="TX fl">
-                <el-image fit='cover' :src='getPlaylistDetail.coverImgUrl' style="width: 210px; height: 230px">
+                <el-image v-if="getAlbum.blurPicUrl" fit='cover' :src='getAlbum.blurPicUrl' style="width: 210px; height: 230px">
                 </el-image>
             </div>
             <div class="info fl">
                 <div>
-                    <span class="gedan">歌单</span>
-                    <span class="gedanName">{{getPlaylistDetail.name}}</span>
+                    <span class="gedan">专辑</span>
+                    <span class="gedanName">{{getAlbum.name}}</span>
                 </div>
-                <div v-if="getPlaylistDetail.creator">
-                    <span class="user">
-                        <el-image fit='cover' class="usertx" :src='getPlaylistDetail.creator.avatarUrl'
-                            style="width: 30px; height: 30px">
-                        </el-image>
-                    </span>
-                    <span class="dengji">
-                        <el-image v-if="getPlaylistDetail.creator.avatarDetail" fit='cover'
-                            :src='getPlaylistDetail.creator.avatarDetail.identityIconUrl'
-                            style="width: 10px; height: 10px">
-                        </el-image>
-                    </span>
-                    <span class="userName">{{getPlaylistDetail.creator.nickname}}</span>
-                    <span class="createTime">{{Time}}创建</span>
+                <div v-if="getAlbum.artists">
+                    <span class="userName" v-for="(name,index) in getAlbum.artists" :key="name.id">
+                        {{name.name}}
+                        <span v-if="getAlbum.artistslength!=1 && index!=getAlbum.artists-1">/</span>
+                        </span>
+                    <span class="createTime">时间:{{Time}}</span>
                 </div>
                 <div class="btnSpan">
                     <span>
@@ -38,7 +30,7 @@
                                 </svg>
                             </i>
                         </span>
-                        <span v-if="getPlaylistDetail" class="playAll">播放全部</span>
+                        <span v-if="getAlbum" class="playAll">播放全部</span>
                         <span>
                             <svg t="1630049745027" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="3751" width="200" height="200">
@@ -55,14 +47,14 @@
                                     d="M181.333333 258.133333c0-42.666667 34.133333-76.8 76.8-76.8h234.666667c25.6 0 46.933333 12.8 64 34.133334l59.733333 93.866666h153.6c38.4 0 72.533333 29.866667 72.533334 68.266667v196.266667c0 17.066667-12.8 34.133333-34.133334 34.133333-17.066667 0-29.866667-12.8-29.866666-25.6v-196.266667c0-4.266667-4.266667-8.533333-8.533334-8.533333H245.333333v392.533333c0 4.266667 4.266667 8.533333 8.533334 8.533334h260.266666c17.066667 0 34.133333 12.8 34.133334 34.133333 0 17.066667-12.8 29.866667-25.6 29.866667h-260.266667c-38.4 0-72.533333-29.866667-72.533333-68.266667V258.133333z m546.133334 349.866667c17.066667 0 29.866667 12.8 29.866666 25.6v55.466667h55.466667c17.066667 0 34.133333 12.8 34.133333 34.133333 0 17.066667-12.8 29.866667-25.6 29.866667H761.6v51.2c0 17.066667-12.8 34.133333-34.133333 34.133333-17.066667 0-29.866667-12.8-29.866667-25.6v-55.466667h-51.2c-17.066667 0-34.133333-12.8-34.133333-34.133333 0-17.066667 12.8-29.866667 25.6-29.866667h55.466666v-51.2c0-21.333333 12.8-34.133333 34.133334-34.133333z m-238.933334-362.666667h-234.666666c-4.266667 0-8.533333 4.266667-8.533334 8.533334v55.466666h290.133334l-38.4-59.733333c0-4.266667-4.266667-4.266667-8.533334-4.266667z"
                                     fill="#dbdbdb" p-id="7642"></path>
                             </svg></i>
-                        收藏({{getPlaylistDetail.subscribedCount>10000?parseInt(getPlaylistDetail.subscribedCount/10000)+"万":getPlaylistDetail.subscribedCount}})</span>
-                    <span class="action"><i><svg t="1630051207927" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                        收藏(123456)</span>
+                    <span v-if="getAlbum.info" class="action"><i><svg t="1630051207927" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="8917" width="200" height="200">
                                 <path
                                     d="M509.454629 0a43.300571 43.300571 0 0 1 0 86.601143 422.985143 422.985143 0 1 0 422.985142 422.838857 43.300571 43.300571 0 1 1 86.454858 0A509.44 509.44 0 1 1 509.454629 0z m262.217142 216.649143a42.569143 42.569143 0 0 1 60.489143-59.830857l74.605715 74.605714a57.490286 57.490286 0 0 1 0 81.408l-74.605715 74.605714a42.569143 42.569143 0 0 1-60.123428-60.196571l12.653714-12.580572h-54.857143c-149.430857 0-200.118857 63.561143-200.118857 255.853715a42.422857 42.422857 0 1 1-85.065143 0.146285V570.514286c0-237.714286 86.820571-340.918857 285.110857-340.918857h54.857143l-12.946286-12.946286z"
                                     fill="#dbdbdb" p-id="8918"></path>
                             </svg></i>
-                        分享({{getPlaylistDetail.shareCount}})</span>
+                        分享({{getAlbum.info.shareCount}})</span>
                     <span class="action"><i><svg t="1630051261981" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="12500" width="200" height="200">
                                 <path
@@ -72,21 +64,6 @@
                                     d="M704.923 503.573l-40.675-40.646-123.477 123.454V166.84H483.23v419.54L359.752 462.927l-40.675 40.646 192.93 192.915z"
                                     p-id="12502" fill="#dbdbdb"></path>
                             </svg></i>下载全部</span>
-                </div>
-                <div v-if="getPlaylistDetail.tags">
-                    <span class="tags">标签:</span>
-                    <span class="tagsContent">{{getPlaylistDetail.tags.join('/')}}</span>
-                </div>
-                <div>
-                    <span class="tags">歌曲:</span>
-                    <span class="count">{{getPlaylistDetail.trackCount}}</span>
-                    <span class="tags">播放:</span>
-                    <span class="count">{{parseInt(getPlaylistDetail.playCount/10000)+'万'}}</span>
-                </div>
-                <div class="description" v-if="!loading">
-                    <span class="tags jj">简介:</span>
-                    <span @click="shouDes=!shouDes" :class="{showContent:shouDes,desContent:true,closeContent:!shouDes}"
-                        class="desContent">{{getPlaylistDetail.description}}</span>
                 </div>
             </div>
         </div>
@@ -99,7 +76,7 @@
                         <el-table @row-dblclick='playsong' :cell-style='handleCell' v-loading='loading'
                             element-loading-text="数据加载中..." element-loading-spinner="el-icon-loading"
                             element-loading-background="rgb(43, 43, 43)" :show-overflow-tooltip="true"
-                            empty-text="抱歉什么也没搜到..." :data="getTracks(songName)" style="width: 100%"
+                            empty-text="抱歉什么也没搜到..." :data="getAlbumSong(songName)" style="width: 100%"
                             :default-sort="{prop: 'date', order: 'descending'}">
                             <el-table-column type="index" :index='handleIndex' label="" sortable width="50">
                             </el-table-column>
@@ -210,7 +187,7 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane :label="'评论('+(getPlaylistDetail.commentCount)+')'" name="second" class="pinglun">
+                    <el-tab-pane :label="'评论('+(getAlbum.info.commentCount)+')'" name="second" class="pinglun">
                         <div>
                             <el-input type="textarea" v-model="suggestion"></el-input>
                             <el-button type="info" round>提交</el-button>
@@ -269,7 +246,7 @@
                             </ul>
                         </div>
                         <div class="replay">
-                            <p class="jincaiPL">最新评论({{getPlaylistDetail.commentCount}})</p>
+                            <p class="jincaiPL">最新评论({{getAlbum.info.commentCount}})</p>
                             <ul>
                                 <li class="clearfloat" v-for='hot in getCommentPlaylist' :key="hot.id">
                                     <el-image class="fl" fit='cover' :src="hot.user.avatarUrl"
@@ -324,58 +301,14 @@
                                 </li>
                             </ul>
                             <el-pagination v-if="!loading" :background="true" layout="prev, pager, next"
-                                :total="getPage3.total" :page-size='getPage3.psize' :current-page='getPage3.pno'
+                                :total="getPage.total" :page-size='getPage.psize' :current-page='getPage.pno'
                                 @current-change="handleCurrentChange1">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane v-loading='shoucangloading' label="收藏者" name="third" element-loading-text="数据加载中..."
-                        element-loading-spinner="el-icon-loading" element-loading-background="rgba(43, 43, 43, 0.8)">
-                        <ul class="userContent">
-                            <li class="clearfloat" v-for="suber in getPlaylistSubscribers" :key="suber.id">
-                                <el-image class="fl contentTx" :src='suber.avatarUrl' style="width: 80px; height: 80px"
-                                    fil='cover'></el-image>
-                                <div class="fl contentTxInfo">
-                                    <div :style="!suber.signature && nosignature">
-                                        <span class="suberName" :title="suber.nickname">{{suber.nickname}}</span>
-                                        <span v-if="suber.gender==1">
-                                            <i>
-                                                <svg t="1630288472167" class="icon" viewBox="0 0 1024 1024"
-                                                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2764"
-                                                    width="200" height="200">
-                                                    <path
-                                                        d="M446.6 925c-46.1 0-90.9-9-133.1-26.9-40.7-17.2-77.3-41.9-108.6-73.2-31.4-31.4-56-67.9-73.2-108.6-17.8-42.2-26.9-86.9-26.9-133.1s9-90.9 26.9-133.1c17.2-40.7 41.9-77.3 73.2-108.6s67.9-56 108.6-73.2c42.2-17.8 86.9-26.9 133.1-26.9s90.9 9 133.1 26.9c40.7 17.2 77.3 41.9 108.6 73.2 31.4 31.4 56 67.9 73.2 108.6 17.8 42.2 26.9 86.9 26.9 133.1s-9 90.9-26.9 133.1c-17.2 40.7-41.9 77.3-73.2 108.6-31.4 31.4-67.9 56-108.6 73.2C537.5 916 492.8 925 446.6 925z m0-623.6c-75.3 0-146 29.3-199.3 82.5-53.2 53.2-82.5 124-82.5 199.3s29.3 146 82.5 199.3c53.2 53.2 124 82.5 199.3 82.5s146-29.3 199.3-82.5c53.2-53.2 82.5-124 82.5-199.3s-29.3-146-82.5-199.3c-53.2-53.2-124-82.5-199.3-82.5zM889.2 409.1c-16.6 0-30-13.4-30-30V159H635.8c-16.6 0-30-13.4-30-30s13.4-30 30-30h253.4c16.6 0 30 13.4 30 30v250.1c0 16.6-13.5 30-30 30z"
-                                                        fill="#09DBB9" p-id="2765"></path>
-                                                    <path d="M624.868 347.5l243.185-239.872 42.132 42.714L667 390.213z"
-                                                        fill="#09DBB9" p-id="2766"></path>
-                                                </svg>
-                                            </i>
-                                        </span>
-                                        <span v-if="suber.gender==2">
-                                            <i>
-                                                <svg t="1630288506040" class="icon" viewBox="0 0 1024 1024"
-                                                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6197"
-                                                    width="200" height="200">
-                                                    <path
-                                                        d="M512 748.8c-46.1 0-90.9-9-133.1-26.9-40.7-17.2-77.3-41.9-108.6-73.2-31.4-31.4-56-67.9-73.2-108.6-17.8-42.2-26.9-86.9-26.9-133.1s9-90.9 26.9-133.1c17.2-40.7 41.9-77.3 73.2-108.6 31.4-31.4 67.9-56 108.6-73.2 42.2-17.8 86.9-26.9 133.1-26.9s90.9 9 133.1 26.9c40.7 17.2 77.3 41.9 108.6 73.2 31.4 31.4 56 67.9 73.2 108.6 17.8 42.2 26.9 86.9 26.9 133.1s-9 90.9-26.9 133.1c-17.2 40.7-41.9 77.3-73.2 108.6-31.4 31.4-67.9 56-108.6 73.2-42.2 17.9-87 26.9-133.1 26.9z m0-623.5c-75.3 0-146 29.3-199.3 82.5s-82.5 124-82.5 199.3 29.3 146 82.5 199.3c53.2 53.2 124 82.5 199.3 82.5s146-29.3 199.3-82.5c53.2-53.2 82.5-124 82.5-199.3s-29.3-146-82.5-199.3c-53.3-53.2-124-82.5-199.3-82.5zM676.1 837.9h-0.2L353 835.5c-16.6-0.1-29.9-13.6-29.8-30.2 0.1-16.5 13.5-29.8 30-29.8h0.2l322.8 2.3c16.6 0.1 29.9 13.6 29.8 30.2 0 16.6-13.5 29.9-29.9 29.9z"
-                                                        fill="#FF6E6E" p-id="6198"></path>
-                                                    <path
-                                                        d="M510.8 958.7h-0.3c-16.6-0.2-29.8-13.8-29.7-30.3l2.3-205.2c0.2-16.5 13.6-29.7 30-29.7h0.3c16.6 0.2 29.8 13.8 29.7 30.3L540.8 929c-0.2 16.5-13.6 29.7-30 29.7z"
-                                                        fill="#FF6E6E" p-id="6199"></path>
-                                                </svg>
-                                            </i>
-                                        </span>
-                                    </div>
-                                    <div class="introduce" v-if="suber.signature">
-                                        <span>{{suber.signature}}</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <el-pagination v-if="!loading" :background="true" layout="prev, pager, next"
-                            :total="getPage2.total" :page-size='getPage2.psize' :current-page='getPage2.pno'
-                            @current-change="handleCurrentChange">
-                        </el-pagination>
+                    <el-tab-pane label="专辑详情" name="third">
+                        <p class="zjjieshao">专辑介绍</p>
+                        <p class="zjneirong">{{getAlbum.description}}</p>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -405,20 +338,33 @@
             }
         },
         computed: {
-            ...mapGetters('findSongModule', ['getCommentPlaylist', 'getHotCommentPlaylist', 'getHotCommentPlaylist',
-                'getPage3', 'getPage2', 'getPlaylistSubscribers', 'getPlaylistDetail', 'getTracks'
-            ]),
+            ...mapGetters('albumModule', ['getAlbum','getAlbumSong','getPage','getHotCommentPlaylist','getCommentPlaylist']),
             Time() {
-                let time = new Date(this.getPlaylistDetail.createTime);
+                let time = new Date(this.getAlbum.publishTime);
                 time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}`
                 return time;
             }
         },
+        watch:{
+         async '$route'(to,from){
+                if(to.query.id!=from.query.id){
+                     if (!this.loading == true) {
+                    this.loading = true;
+                }
+                await this.GetAlbum(to.query.id);
+                await this.GetCommentAlbum({
+                    id: to.query.id,
+                    limit: 50
+                })
+                this.loading = false;
+                }
+            }
+        },
         methods: {
-            ...mapMutations('findSongModule', ['setPage2', 'setPage3']),
+            ...mapMutations('albumModule', ['setPage']),
             ...mapMutations('playerModule', ['setIsPlay']),
             ...mapActions('playerModule', ['getSong']),
-            ...mapActions('findSongModule', ['GetCommentPlaylist', 'GetPlaylistSubscribers', 'GetPlaylistDetail']),
+            ...mapActions('albumModule', ['GetAlbum','GetCommentAlbum']),
             async playsong(row) {
                 this.setIsPlay(true);
                 await this.getSong({
@@ -435,15 +381,6 @@
             handleIndex(index) {
                 return index < 10 ? '0' + (index + 1) : index + 1;
             },
-            // handleArName(row) {
-            //     if (row.ar.length > 1) {
-            //         let name = '';
-            //         row.ar.forEach(item => name = name + item.name + '/')
-            //         return name;
-            //     } else {
-            //         return row.ar[0].name;
-            //     }
-            // },
             handleTime(row) {
                 let s = parseInt(row.dt / 1000);
                 let m = parseInt(s / 60);
@@ -465,7 +402,7 @@
                     limit: 60,
                     offset: (val - 1) * 60
                 });
-                this.setPage2({
+                this.setPage({
                     ...this.getPage2,
                     pno: val
                 });
@@ -473,12 +410,12 @@
             },
             async handleCurrentChange1(val) {
                 this.shoucangloading = true;
-                await this.GetCommentPlaylist({
+                await this.GetCommentAlbum({
                     id: this.$route.query.id,
                     limit: 50,
                     offset: (val - 1) * 50
                 });
-                this.setPage3({
+                this.setPage({
                     ...this.getPage3,
                     pno: val
                 });
@@ -490,21 +427,28 @@
                 if (!vm.loading == true) {
                     vm.loading = true;
                 }
-                await vm.GetPlaylistDetail(from.query.id);
-                await vm.GetCommentPlaylist({
+                await vm.GetAlbum(from.query.id);
+                await vm.GetCommentAlbum({
                     id: from.query.id,
                     limit: 50
                 })
-                await vm.GetPlaylistSubscribers({
-                    id: from.query.id,
-                    limit: 60
-                });
                 vm.loading = false;
             })
         },
     }
 </script>
 <style scoped>
+.zjjieshao{
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.zjneirong{
+    text-indent: 25px;
+    color: rgb(95, 92, 92);
+    font-size: 15px;
+}
     .huifu {
         padding: 5px 0;
         margin-top: 5px;

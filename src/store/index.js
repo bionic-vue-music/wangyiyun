@@ -4,7 +4,8 @@ import loginModule from './login/index'
 import userModule from './user/index'
 import searchSongsModule from './searchSongs/index';
 import findSongModule from './findSongs/findSong';
-import playerModule from "./player/index"
+import playerModule from "./player/index";
+import albumModule from "./album/index"
 // import createPersistedState from 'vuex-persistedstate';
 Vue.use(vuex);
 
@@ -34,7 +35,8 @@ export default new vuex.Store({
       userModule,
       searchSongsModule,
       findSongModule,
-      playerModule
+      playerModule,
+      albumModule
     },
   // plugins: [createPersistedState()],
 })

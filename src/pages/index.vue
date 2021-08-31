@@ -12,6 +12,7 @@
                     <keep-alive>
                         <router-view name="findSong"></router-view>
                         <router-view name="playlist"></router-view>
+                        <router-view name="album"></router-view>
                         <router-view name="userCreate"></router-view>
                         <router-view name="userSave"></router-view>
                     </keep-alive>
