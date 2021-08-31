@@ -126,6 +126,7 @@ export default {
             }
           //触发手机登录请求
           let res=await this.getLoginByPhone(this.loginPhone);
+          sessionStorage.cookie=res.data.cookie;
             console.log(res);
           if(res){
 

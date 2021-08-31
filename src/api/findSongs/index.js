@@ -118,3 +118,32 @@ export function playlistDetail(id){
         }
     })
 }
+
+
+//说明 : 调用此接口 , 传入歌单 id 可获取歌单的所有收藏者
+export function playlistSubscribers(page){
+    return Vue.$http({
+        url:'/playlist/subscribers',
+        method:'get',
+        params:{
+            id:page.id,
+            offset:page.offset,
+            limit:page.limit,
+            cookie:sessionStorage.cookie
+        }
+    })
+}
+
+//说明 : 调用此接口 , 传入音乐 id 和 limit 参数 , 可获得该歌单的所有评论 ( 不需要 登录 )
+export function commentPlaylist(page){
+    return Vue.$http({
+        url:'/comment/playlist',
+        method:'get',
+        params:{
+          id:page.id,
+          limit:page.limit,
+          offset:page.offset,
+          before:page.before
+        }
+    })
+}

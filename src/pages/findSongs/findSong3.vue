@@ -394,13 +394,13 @@
         background-color: rgb(43, 43, 43);
     }
 
-    .playlist /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
-        background-color: rgb(236, 65, 65);
-    }
-
     .playlist /deep/ .btn-prev,
     .playlist /deep/ .btn-next {
         background-color: rgb(56, 56, 56);
+    }
+
+    .playlist /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background-color: rgb(236, 65, 65);
     }
 
     .el-pagination {

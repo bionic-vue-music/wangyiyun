@@ -56,6 +56,8 @@ export default {
        _this.timer=setInterval(()=>{
         setTimeout(()=>{
           qrImgStatus(_this.key).then(async (res)=>{
+              sessionStorage.cookie=res.data.cookie;
+              console.log(res);
               let {code,message}=res.data;
               if(code==803){
                 _this.$notify({
@@ -70,6 +72,7 @@ export default {
                 //获取用户状态，数据
                 let userData=await _this.getLoginStatus();
                 let {data}=userData.data
+                // console.log(userData);
                 if(data.code==200){
                     //退出登录页
                     //关闭dialog
@@ -87,8 +90,9 @@ export default {
                     // by:id--获取用户详情
                    _this.getUserDetail(data.profile.userId);
                    // by id 获取用户歌单
-                   console.log(data.profile.userId);
+                //    console.log(data.profile.userId);
                    _this.getUserPlaylistsById(data.profile.userId);
+                   this.$router.push({name:'findSong1'})
                 }
               }else if(code==800){
                  _this.$notify({

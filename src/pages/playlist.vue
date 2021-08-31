@@ -91,13 +91,15 @@
             </div>
         </div>
         <div class="body clearfloat">
-            <el-input size="mini" v-model="songName" v-if="!loading" placeholder="搜索歌单音乐"  suffix-icon="el-icon-search"></el-input>
             <div>
                 <el-tabs v-model="activeName" class="tabs" v-if="!loading">
                     <el-tab-pane label="歌曲列表" name="first">
-                        <el-table @row-dblclick='playsong' :cell-style='handleCell' v-loading='loading' element-loading-text="数据加载中..."
-                            element-loading-spinner="el-icon-loading" element-loading-background="rgb(43, 43, 43)"
-                            :show-overflow-tooltip="true" empty-text="抱歉什么也没搜到..." :data="getTracks(songName)" style="width: 100%"
+                        <el-input size="mini" v-model="songName" v-if="!loading" placeholder="搜索歌单音乐"
+                            suffix-icon="el-icon-search"></el-input>
+                        <el-table @row-dblclick='playsong' :cell-style='handleCell' v-loading='loading'
+                            element-loading-text="数据加载中..." element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgb(43, 43, 43)" :show-overflow-tooltip="true"
+                            empty-text="抱歉什么也没搜到..." :data="getTracks(songName)" style="width: 100%"
                             :default-sort="{prop: 'date', order: 'descending'}">
                             <el-table-column type="index" :index='handleIndex' label="" sortable width="50">
                             </el-table-column>
@@ -119,7 +121,7 @@
                                     <span class="Icon">
                                         <i>
                                             <svg t="1630142787352" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg" p-id="2254" width="200" >
+                                                xmlns="http://www.w3.org/2000/svg" p-id="2254" width="200">
                                                 <path
                                                     d="M333.917091 462.848c-10.938182 0-21.876364 4.189091-30.208 12.567273a42.682182 42.682182 0 0 0 0 60.509091l173.986909 173.847272c16.616727 16.756364 43.752727 16.756364 60.509091 0l173.940364-173.847272a42.682182 42.682182 0 0 0-30.254546-72.983273 42.635636 42.635636 0 0 0-30.347636 12.474182l-100.864 100.910545V42.775273a42.728727 42.728727 0 1 0-85.597091 0v533.550545l-100.864-101.003636a43.008 43.008 0 0 0-30.301091-12.474182z m629.108364 170.821818a37.748364 37.748364 0 0 0-37.701819 37.748364v213.178182a22.528 22.528 0 0 1-22.528 22.481454H121.157818a22.528 22.528 0 0 1-22.434909-22.481454v-213.271273a37.701818 37.701818 0 0 0-75.403636 0v243.153454c0 37.422545 30.440727 67.770182 67.723636 67.770182h842.007273c37.376 0 67.723636-30.440727 67.723636-67.770182v-243.153454a37.701818 37.701818 0 0 0-37.701818-37.608727z"
                                                     fill="#bfbfbf" p-id="2255"></path>
@@ -131,8 +133,7 @@
                                     <span class="Icon1" v-if="scope.row.pop==100">
                                         <i>
                                             <svg t="1629613317968" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg" p-id="14055" 
-                                                height="200">
+                                                xmlns="http://www.w3.org/2000/svg" p-id="14055" height="200">
                                                 <path
                                                     d="M411.82958 487.166405c-0.548492-0.042979-1.032516-0.303922-1.581008-0.303922l-90.782609 0c-19.49603 0-35.325553-15.678074-35.325553-34.914184s15.829524-34.892695 35.325553-34.892695c0.724501 0 1.339508-0.346901 2.020006-0.411369 0.703011 0.064468 1.315972 0.411369 2.041496 0.411369l135.110187 0c12.140505 0 21.954011-9.714246 21.954011-21.686928 0-11.969613-9.813506-21.684882-21.954011-21.684882L323.526441 373.683794c-0.725524 0-1.339508 0.325411-2.041496 0.38988-0.681522-0.064468-1.295506-0.38988-2.020006-0.38988-43.691081 0-79.235622 35.109636-79.235622 78.263481 0 40.030715 30.692023 72.776514 69.992097 77.352739 1.559519 0.346901 2.986007 0.933255 4.63353 0.933255l93.834108 0c19.47454 0 35.325553 15.656585 35.325553 34.892695 0 19.234063-15.851013 34.892695-35.325553 34.892695L262.185374 600.018659c-12.141528 0-21.956058 9.714246-21.956058 21.684882 0 11.992125 9.813506 21.686928 21.956058 21.686928l150.851707 0c1.557472 0 2.919493-0.564865 4.368494-0.867764 39.563064-4.358261 70.5191-37.190017 70.5191-77.395718C487.924675 523.033287 454.025611 488.834394 411.82958 487.166405z"
                                                     fill="#d81e06" p-id="14056"></path>
@@ -148,8 +149,7 @@
                                     <span class="Icon1" v-if="scope.row.mv">
                                         <i>
                                             <svg t="1629613454631" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg" p-id="16318"
-                                                height="200">
+                                                xmlns="http://www.w3.org/2000/svg" p-id="16318" height="200">
                                                 <path
                                                     d="M878.028283 244.363636H145.842424c-54.044444 0-97.486869 43.830303-97.486868 97.874748v341.074747c0 53.915152 43.70101 97.874747 97.486868 97.874748h732.315152c54.044444 0 97.486869-43.830303 97.486868-97.874748V342.238384c-0.129293-53.915152-43.70101-97.874747-97.616161-97.874748z m48.743434 438.949495c0 27.022222-21.850505 49.00202-48.614141 49.002021H145.842424c-26.892929 0-48.614141-21.979798-48.614141-49.002021V342.238384c0-27.022222 21.850505-49.00202 48.614141-49.00202h732.315152c26.892929 0 48.614141 21.979798 48.614141 49.00202v341.074747z"
                                                     p-id="16319" fill="#d81e06"></path>
@@ -178,7 +178,16 @@
                                     </span>
                                     <span class="Icon1" v-if="scope.row.fee==1">
                                         <i>
-                                            <svg t="1630150361895" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14949" width="200" height="200"><path d="M827.9 243H194.8c-41.4 0-75.8 31.2-75.8 70.7v395.6c0 39.5 34.5 70.7 75.8 70.7H828c42.3 0 75.8-32.1 75.8-70.7V313.7c0-39.5-34.5-70.7-75.9-70.7zM446.7 404.8L339.6 642c-3.6 7.6-10.7 13-18.7 14.1h-22.3c-9.8 0-18.7-9.7-20.5-21.7l-34.8-237.2c-2.7-16.2 7.1-30.3 20.5-30.3h5.4c9.8 0 18.7 9.7 20.5 21.7l16.9 123.5c2.7 23.8 29.4 29.2 39.2 7.6L409.1 380c3.6-7.6 10.7-13 18.7-13 16.2-0.1 26.9 20.5 18.9 37.8z m126-6.5l-57.6 237.2c-2.5 11.9-15 20.6-28.8 20.6h-7.5c-18.8 0-32.5-15.2-28.8-31.4l57.6-237.2c2.5-11.9 15-20.6 28.8-20.6h7.5c18.8 0 32.6 15.2 28.8 31.4zM773 481.7c-4.3 13-9.4 23.8-16.2 32.5-6 7.6-12.8 14.1-20.5 18.4-6.8 4.3-17.1 7.6-29.9 9.7-6.8 1.1-20.5 2.2-41 2.2h-14.5c-9.4 0-18 8.7-19.7 20.6l-11.1 69.3c-1.7 11.9-10.3 20.6-21.4 21.7h-5.1c-12.8 0-22.2-15.2-19.7-31.4l39.3-237.2c1.7-11.9 10.3-20.6 19.7-20.6H709c17.1 0 29.9 2.2 39.3 7.6 9.4 5.4 18 14.1 23.1 24.9 6 10.8 8.6 23.8 8.6 40.1-0.1 14.1-2.7 28.2-7 42.2z" p-id="14950" fill="#d81e06"></path><path d="M655.9 490.9l0.2-1.1h-0.2zM726 411.5c-3.9-2.1-12.6-3.2-26.8-3.2h-15.7c-8.7 0-16.5 8.6-18.1 20.4l-9.3 61.2h12.4c22.8 0 37.8-1.1 45.6-5.4 7.9-3.2 13.4-9.7 18.1-18.2 3.9-8.6 6.3-17.2 6.3-27.9 0-7.5-0.8-12.9-3.1-17.2-2.4-4.4-5.5-7.6-9.4-9.7z" p-id="14951" fill="#d81e06"></path></svg>
+                                            <svg t="1630150361895" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                                xmlns="http://www.w3.org/2000/svg" p-id="14949" width="200"
+                                                height="200">
+                                                <path
+                                                    d="M827.9 243H194.8c-41.4 0-75.8 31.2-75.8 70.7v395.6c0 39.5 34.5 70.7 75.8 70.7H828c42.3 0 75.8-32.1 75.8-70.7V313.7c0-39.5-34.5-70.7-75.9-70.7zM446.7 404.8L339.6 642c-3.6 7.6-10.7 13-18.7 14.1h-22.3c-9.8 0-18.7-9.7-20.5-21.7l-34.8-237.2c-2.7-16.2 7.1-30.3 20.5-30.3h5.4c9.8 0 18.7 9.7 20.5 21.7l16.9 123.5c2.7 23.8 29.4 29.2 39.2 7.6L409.1 380c3.6-7.6 10.7-13 18.7-13 16.2-0.1 26.9 20.5 18.9 37.8z m126-6.5l-57.6 237.2c-2.5 11.9-15 20.6-28.8 20.6h-7.5c-18.8 0-32.5-15.2-28.8-31.4l57.6-237.2c2.5-11.9 15-20.6 28.8-20.6h7.5c18.8 0 32.6 15.2 28.8 31.4zM773 481.7c-4.3 13-9.4 23.8-16.2 32.5-6 7.6-12.8 14.1-20.5 18.4-6.8 4.3-17.1 7.6-29.9 9.7-6.8 1.1-20.5 2.2-41 2.2h-14.5c-9.4 0-18 8.7-19.7 20.6l-11.1 69.3c-1.7 11.9-10.3 20.6-21.4 21.7h-5.1c-12.8 0-22.2-15.2-19.7-31.4l39.3-237.2c1.7-11.9 10.3-20.6 19.7-20.6H709c17.1 0 29.9 2.2 39.3 7.6 9.4 5.4 18 14.1 23.1 24.9 6 10.8 8.6 23.8 8.6 40.1-0.1 14.1-2.7 28.2-7 42.2z"
+                                                    p-id="14950" fill="#d81e06"></path>
+                                                <path
+                                                    d="M655.9 490.9l0.2-1.1h-0.2zM726 411.5c-3.9-2.1-12.6-3.2-26.8-3.2h-15.7c-8.7 0-16.5 8.6-18.1 20.4l-9.3 61.2h12.4c22.8 0 37.8-1.1 45.6-5.4 7.9-3.2 13.4-9.7 18.1-18.2 3.9-8.6 6.3-17.2 6.3-27.9 0-7.5-0.8-12.9-3.1-17.2-2.4-4.4-5.5-7.6-9.4-9.7z"
+                                                    p-id="14951" fill="#d81e06"></path>
+                                            </svg>
                                         </i>
                                     </span>
                                 </template>
@@ -201,8 +210,131 @@
                             </el-table-column>
                         </el-table>
                     </el-tab-pane>
-                    <el-tab-pane label="评论" name="second">配置管理</el-tab-pane>
-                    <el-tab-pane label="收藏者" name="third">角色管理</el-tab-pane>
+                    <el-tab-pane :label="'评论('+(getPlaylistDetail.commentCount)+')'" name="second" class="pinglun">
+                       <div>
+                            <el-input type="textarea" v-model="suggestion" ></el-input>
+                        <el-button type="info" round>提交</el-button>
+                       </div>
+                       <div class="replay">
+                           <p class="jincaiPL" v-if="getHotCommentPlaylist">精彩评论</p>
+                           <ul>
+                               <li class="clearfloat" v-for='hot in getHotCommentPlaylist' :key="hot.id">
+                                   <el-image class="fl" fit='cover' :src="hot.user.avatarUrl" style="width: 40px; height: 40px"></el-image>
+                                   <div class="fl replayInfo">
+                                       <p>
+                                           <span class="contentname">{{hot.user.nickname}}:</span>
+                                           <span class="hot_content">{{hot.content}}</span>
+                                       </p>
+                                       <p class="time clearfloat">
+                                           <span class="fl">{{new Date(hot.time).toLocaleString()}}</span>
+                                           <span class="fr">
+                                               <i>
+                                                   <svg t="1630312398155" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3866" width="200" height="200"><path d="M185.2 888.7c-16.6 0-30-13.4-30-30v-580c0-49.6 40.4-90 90-90h540c49.6 0 90 40.4 90 90v410c0 49.6-40.4 90-90 90h-429c-16.6 0-30-13.4-30-30s13.4-30 30-30h429c16.5 0 30-13.5 30-30v-410c0-16.5-13.5-30-30-30h-540c-16.5 0-30 13.5-30 30v580c0 16.5-13.5 30-30 30z m490.1-430.5H347c-16.6 0-30-13.4-30-30s13.4-30 30-30h328.3c16.6 0 30 13.4 30 30s-13.4 30-30 30zM494 598.2H345.7c-16.6 0-30-13.4-30-30s13.4-30 30-30H494c16.6 0 30 13.4 30 30s-13.4 30-30 30zM194.2 883.7c-9.8 0-19.3-4.8-25.1-13.5-9.1-13.9-5.2-32.5 8.6-41.5l160-105c13.9-9.1 32.5-5.2 41.5 8.6 9.1 13.9 5.2 32.5-8.6 41.5l-160 105c-5 3.3-10.8 4.9-16.4 4.9z" p-id="3867" fill="#bfbfbf"></path></svg>
+                                               </i>
+                                           </span>
+                                           <span class="fr dianzan">
+                                               <i>
+                                                   <svg t="1630312360725" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2293" width="200" height="200"><path d="M511.998 64c21 0 38.1 17 38.1 38.1s-17 38.1-38.1 38.1c-205.4 0-371.9 166.5-371.9 371.9s166.5 371.8 371.9 371.8 371.9-166.5 371.9-371.9c0-21 17-38.1 38.1-38.1s38 17.1 38 38.1c0 247.4-200.6 448-448 448s-448-200.6-448-448 200.6-448 448-448z m230.6 190.5c-14.2-14.7-14-38 0.5-52.4 14.5-14.5 37.8-14.6 52.7-0.2l65.6 65.6c19.8 19.8 19.8 51.8 0 71.6l-65.6 65.6c-14.6 14.6-38.3 14.6-52.9 0-14.6-14.6-14.6-38.3 0-52.9l11.1-11.1h-48.3c-131.3 0-175.9 55.9-175.9 225 0 20.7-16.7 37.4-37.4 37.4s-37.4-16.7-37.4-37.4c0-209.1 76.3-299.8 250.7-299.8h48.3l-11.4-11.4z" fill="#bfbfbf" p-id="2294"></path></svg>
+                                               </i>
+                                           </span>
+                                           <span class="fr dianzan">
+                                               <i>
+                                                   <svg t="1630312308571" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1260" width="200" height="200"><path d="M598.354747 67.542626c-48.148687 0-90.130101 32.905051-98.960808 79.437576 0 0-14.312727 72.882424-21.798787 99.090101-12.308687 43.196768-55.363232 90.944646-86.522829 106.188283-23.531313 11.636364-110.99798 11.765657-116.350707 11.765656H155.707475c-32.762828 0-59.384242 26.479192-59.384243 59.384243v475.022222c0 32.762828 26.479192 59.384242 59.384243 59.384242h548.033939c88.126061 0 163.025455-64.452525 176.135758-151.647676l45.873131-305.713132c10.834747-71.809293-44.8-136.274747-117.423838-136.274747H673.254141s20.066263-66.469495 30.228687-178.669899c5.081212-56.837172-35.167677-110.99798-94.280404-117.152323-3.620202-0.54303-7.227475-0.814545-10.847677-0.814546zM333.705051 898.288485V421.533737c38.917172-2.534141 66.999596-8.016162 83.574949-16.316767 43.726869-21.669495 99.633131-81.040808 117.281616-143.088485 7.899798-27.681616 21.39798-96.155152 23.001212-104.184243 3.47798-17.92 20.596364-31.159596 40.649697-31.159596 1.603232 0 3.206465 0.129293 4.822627 0.271516 28.211717 2.947879 43.326061 29.698586 41.32202 52.686868-9.360808 103.912727-27.823838 166.503434-28.082425 166.904243l-23.130505 76.489697h215.182223c17.519192 0 33.564444 7.356768 45.071515 20.596363 11.507071 13.239596 16.316768 30.228687 13.640404 47.618586L821.294545 797.052121c-8.830707 58.569697-58.181818 101.094141-117.423838 101.094142h-370.165656v0.142222z m-177.997576 0v-475.022222h118.626262v475.022222H155.707475z m0 0" p-id="1261" fill="#bfbfbf"></path></svg>
+                                               </i>
+                                               {{hot.likedCount}}
+                                           </span>
+                                       </p>
+                                   </div>
+                               </li>
+                            <p class="moreCont">更多精彩评论></p>
+                           </ul>
+                       </div>
+                         <div class="replay">
+                           <p class="jincaiPL">最新评论({{getPlaylistDetail.commentCount}})</p>
+                           <ul>
+                               <li class="clearfloat" v-for='hot in getCommentPlaylist' :key="hot.id">
+                                   <el-image class="fl" fit='cover' :src="hot.user.avatarUrl" style="width: 40px; height: 40px"></el-image>
+                                   <div class="fl replayInfo">
+                                       <p>
+                                           <span class="contentname">{{hot.user.nickname}}:</span>
+                                           <span class="hot_content">{{hot.content}}</span>
+                                       </p>
+                                       <p class="huifu" v-if="hot.beReplied[0]">
+                                           <span class="huifuiName">@{{hot.beReplied[0].user.nickname}}:</span>
+                                           <span>{{hot.beReplied[0].content}}</span>
+                                       </p>
+                                       <p class="time clearfloat">
+                                           <span class="fl">{{new Date(hot.time).toLocaleString()}}</span>
+                                           <span class="fr">
+                                               <i>
+                                                   <svg t="1630312398155" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3866" width="200" height="200"><path d="M185.2 888.7c-16.6 0-30-13.4-30-30v-580c0-49.6 40.4-90 90-90h540c49.6 0 90 40.4 90 90v410c0 49.6-40.4 90-90 90h-429c-16.6 0-30-13.4-30-30s13.4-30 30-30h429c16.5 0 30-13.5 30-30v-410c0-16.5-13.5-30-30-30h-540c-16.5 0-30 13.5-30 30v580c0 16.5-13.5 30-30 30z m490.1-430.5H347c-16.6 0-30-13.4-30-30s13.4-30 30-30h328.3c16.6 0 30 13.4 30 30s-13.4 30-30 30zM494 598.2H345.7c-16.6 0-30-13.4-30-30s13.4-30 30-30H494c16.6 0 30 13.4 30 30s-13.4 30-30 30zM194.2 883.7c-9.8 0-19.3-4.8-25.1-13.5-9.1-13.9-5.2-32.5 8.6-41.5l160-105c13.9-9.1 32.5-5.2 41.5 8.6 9.1 13.9 5.2 32.5-8.6 41.5l-160 105c-5 3.3-10.8 4.9-16.4 4.9z" p-id="3867" fill="#bfbfbf"></path></svg>
+                                               </i>
+                                           </span>
+                                           <span class="fr dianzan">
+                                               <i>
+                                                   <svg t="1630312360725" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2293" width="200" height="200"><path d="M511.998 64c21 0 38.1 17 38.1 38.1s-17 38.1-38.1 38.1c-205.4 0-371.9 166.5-371.9 371.9s166.5 371.8 371.9 371.8 371.9-166.5 371.9-371.9c0-21 17-38.1 38.1-38.1s38 17.1 38 38.1c0 247.4-200.6 448-448 448s-448-200.6-448-448 200.6-448 448-448z m230.6 190.5c-14.2-14.7-14-38 0.5-52.4 14.5-14.5 37.8-14.6 52.7-0.2l65.6 65.6c19.8 19.8 19.8 51.8 0 71.6l-65.6 65.6c-14.6 14.6-38.3 14.6-52.9 0-14.6-14.6-14.6-38.3 0-52.9l11.1-11.1h-48.3c-131.3 0-175.9 55.9-175.9 225 0 20.7-16.7 37.4-37.4 37.4s-37.4-16.7-37.4-37.4c0-209.1 76.3-299.8 250.7-299.8h48.3l-11.4-11.4z" fill="#bfbfbf" p-id="2294"></path></svg>
+                                               </i>
+                                           </span>
+                                           <span class="fr dianzan">
+                                               <i>
+                                                   <svg t="1630312308571" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1260" width="200" height="200"><path d="M598.354747 67.542626c-48.148687 0-90.130101 32.905051-98.960808 79.437576 0 0-14.312727 72.882424-21.798787 99.090101-12.308687 43.196768-55.363232 90.944646-86.522829 106.188283-23.531313 11.636364-110.99798 11.765657-116.350707 11.765656H155.707475c-32.762828 0-59.384242 26.479192-59.384243 59.384243v475.022222c0 32.762828 26.479192 59.384242 59.384243 59.384242h548.033939c88.126061 0 163.025455-64.452525 176.135758-151.647676l45.873131-305.713132c10.834747-71.809293-44.8-136.274747-117.423838-136.274747H673.254141s20.066263-66.469495 30.228687-178.669899c5.081212-56.837172-35.167677-110.99798-94.280404-117.152323-3.620202-0.54303-7.227475-0.814545-10.847677-0.814546zM333.705051 898.288485V421.533737c38.917172-2.534141 66.999596-8.016162 83.574949-16.316767 43.726869-21.669495 99.633131-81.040808 117.281616-143.088485 7.899798-27.681616 21.39798-96.155152 23.001212-104.184243 3.47798-17.92 20.596364-31.159596 40.649697-31.159596 1.603232 0 3.206465 0.129293 4.822627 0.271516 28.211717 2.947879 43.326061 29.698586 41.32202 52.686868-9.360808 103.912727-27.823838 166.503434-28.082425 166.904243l-23.130505 76.489697h215.182223c17.519192 0 33.564444 7.356768 45.071515 20.596363 11.507071 13.239596 16.316768 30.228687 13.640404 47.618586L821.294545 797.052121c-8.830707 58.569697-58.181818 101.094141-117.423838 101.094142h-370.165656v0.142222z m-177.997576 0v-475.022222h118.626262v475.022222H155.707475z m0 0" p-id="1261" fill="#bfbfbf"></path></svg>
+                                               </i>
+                                               {{hot.likedCount}}
+                                           </span>
+                                       </p>
+                                   </div>
+                               </li>
+                           </ul>
+                       </div>
+                    </el-tab-pane>
+                    <el-tab-pane v-loading='shoucangloading' label="收藏者" name="third" element-loading-text="数据加载中..."
+                        element-loading-spinner="el-icon-loading" element-loading-background="rgba(43, 43, 43, 0.8)">
+                        <ul class="userContent">
+                            <li class="clearfloat" v-for="suber in getPlaylistSubscribers" :key="suber.id">
+                                <el-image class="fl contentTx" :src='suber.avatarUrl' style="width: 80px; height: 80px"
+                                    fil='cover'></el-image>
+                                <div class="fl contentTxInfo">
+                                    <div :style="!suber.signature && nosignature">
+                                        <span class="suberName" :title="suber.nickname">{{suber.nickname}}</span>
+                                        <span v-if="suber.gender==1">
+                                            <i>
+                                                <svg t="1630288472167" class="icon" viewBox="0 0 1024 1024"
+                                                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2764"
+                                                    width="200" height="200">
+                                                    <path
+                                                        d="M446.6 925c-46.1 0-90.9-9-133.1-26.9-40.7-17.2-77.3-41.9-108.6-73.2-31.4-31.4-56-67.9-73.2-108.6-17.8-42.2-26.9-86.9-26.9-133.1s9-90.9 26.9-133.1c17.2-40.7 41.9-77.3 73.2-108.6s67.9-56 108.6-73.2c42.2-17.8 86.9-26.9 133.1-26.9s90.9 9 133.1 26.9c40.7 17.2 77.3 41.9 108.6 73.2 31.4 31.4 56 67.9 73.2 108.6 17.8 42.2 26.9 86.9 26.9 133.1s-9 90.9-26.9 133.1c-17.2 40.7-41.9 77.3-73.2 108.6-31.4 31.4-67.9 56-108.6 73.2C537.5 916 492.8 925 446.6 925z m0-623.6c-75.3 0-146 29.3-199.3 82.5-53.2 53.2-82.5 124-82.5 199.3s29.3 146 82.5 199.3c53.2 53.2 124 82.5 199.3 82.5s146-29.3 199.3-82.5c53.2-53.2 82.5-124 82.5-199.3s-29.3-146-82.5-199.3c-53.2-53.2-124-82.5-199.3-82.5zM889.2 409.1c-16.6 0-30-13.4-30-30V159H635.8c-16.6 0-30-13.4-30-30s13.4-30 30-30h253.4c16.6 0 30 13.4 30 30v250.1c0 16.6-13.5 30-30 30z"
+                                                        fill="#09DBB9" p-id="2765"></path>
+                                                    <path d="M624.868 347.5l243.185-239.872 42.132 42.714L667 390.213z"
+                                                        fill="#09DBB9" p-id="2766"></path>
+                                                </svg>
+                                            </i>
+                                        </span>
+                                        <span v-if="suber.gender==2">
+                                            <i>
+                                                <svg t="1630288506040" class="icon" viewBox="0 0 1024 1024"
+                                                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6197"
+                                                    width="200" height="200">
+                                                    <path
+                                                        d="M512 748.8c-46.1 0-90.9-9-133.1-26.9-40.7-17.2-77.3-41.9-108.6-73.2-31.4-31.4-56-67.9-73.2-108.6-17.8-42.2-26.9-86.9-26.9-133.1s9-90.9 26.9-133.1c17.2-40.7 41.9-77.3 73.2-108.6 31.4-31.4 67.9-56 108.6-73.2 42.2-17.8 86.9-26.9 133.1-26.9s90.9 9 133.1 26.9c40.7 17.2 77.3 41.9 108.6 73.2 31.4 31.4 56 67.9 73.2 108.6 17.8 42.2 26.9 86.9 26.9 133.1s-9 90.9-26.9 133.1c-17.2 40.7-41.9 77.3-73.2 108.6-31.4 31.4-67.9 56-108.6 73.2-42.2 17.9-87 26.9-133.1 26.9z m0-623.5c-75.3 0-146 29.3-199.3 82.5s-82.5 124-82.5 199.3 29.3 146 82.5 199.3c53.2 53.2 124 82.5 199.3 82.5s146-29.3 199.3-82.5c53.2-53.2 82.5-124 82.5-199.3s-29.3-146-82.5-199.3c-53.3-53.2-124-82.5-199.3-82.5zM676.1 837.9h-0.2L353 835.5c-16.6-0.1-29.9-13.6-29.8-30.2 0.1-16.5 13.5-29.8 30-29.8h0.2l322.8 2.3c16.6 0.1 29.9 13.6 29.8 30.2 0 16.6-13.5 29.9-29.9 29.9z"
+                                                        fill="#FF6E6E" p-id="6198"></path>
+                                                    <path
+                                                        d="M510.8 958.7h-0.3c-16.6-0.2-29.8-13.8-29.7-30.3l2.3-205.2c0.2-16.5 13.6-29.7 30-29.7h0.3c16.6 0.2 29.8 13.8 29.7 30.3L540.8 929c-0.2 16.5-13.6 29.7-30 29.7z"
+                                                        fill="#FF6E6E" p-id="6199"></path>
+                                                </svg>
+                                            </i>
+                                        </span>
+                                    </div>
+                                    <div class="introduce" v-if="suber.signature">
+                                        <span>{{suber.signature}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <el-pagination v-if="!loading" :background="true" layout="prev, pager, next"
+                            :total="getPage2.total" :page-size='getPage2.psize' :current-page='getPage2.pno'
+                            @current-change="handleCurrentChange">
+                        </el-pagination>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </div>
@@ -223,10 +355,15 @@
                 index: 1,
                 loading: true,
                 shouDes: false,
+                shoucangloading: false,
+                suggestion:'',
+                nosignature: {
+                    'margin-top': '30px'
+                }
             }
         },
         computed: {
-            ...mapGetters('findSongModule', ['getPlaylistDetail', 'getTracks']),
+            ...mapGetters('findSongModule', ['getCommentPlaylist','getHotCommentPlaylist','getHotCommentPlaylist','getPage2', 'getPlaylistSubscribers', 'getPlaylistDetail', 'getTracks']),
             Time() {
                 let time = new Date(this.getPlaylistDetail.createTime);
                 time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}`
@@ -234,12 +371,15 @@
             }
         },
         methods: {
-            ...mapMutations('playerModule',['setIsPlay']),
-            ...mapActions('playerModule',['getSong']),
-            ...mapActions('findSongModule', ['GetPlaylistDetail']),
-            async playsong(row){
-               this.setIsPlay(true);
-               await this.getSong({id:row.id});
+            ...mapMutations('findSongModule', ['setPage2']),
+            ...mapMutations('playerModule', ['setIsPlay']),
+            ...mapActions('playerModule', ['getSong']),
+            ...mapActions('findSongModule', ['GetCommentPlaylist','GetPlaylistSubscribers', 'GetPlaylistDetail']),
+            async playsong(row) {
+                this.setIsPlay(true);
+                await this.getSong({
+                    id: row.id
+                });
             },
             handleCell({
                 columnIndex
@@ -271,7 +411,22 @@
                     m = '0' + m;
                 }
                 return `${m}:${q}`
-            }
+            },
+            async handleCurrentChange(val) {
+                //    console.log(val);
+
+                this.shoucangloading = true;
+                await this.GetPlaylistSubscribers({
+                    id: this.$route.query.id,
+                    limit:60,
+                    offset: (val - 1) * 60
+                });
+                this.setPage2({
+                    ...this.getPage2,
+                    pno: val
+                });
+                this.shoucangloading = false;
+            },
         },
         beforeRouteEnter(from, to, next) {
             next(async (vm) => {
@@ -279,26 +434,220 @@
                     vm.loading = true;
                 }
                 await vm.GetPlaylistDetail(from.query.id);
+                await vm.GetCommentPlaylist({id:from.query.id,limit:50})
+                await vm.GetPlaylistSubscribers({
+                    id: from.query.id,
+                    limit: 60
+                });
                 vm.loading = false;
             })
         },
     }
 </script>
 <style scoped>
-.playlist /deep/ .el-input__inner{
-    background-color: rgb(77, 76, 76);
-      border-radius: 15px;
-    border: none;
-
-    color: white;
+.huifu{
+    padding: 5px 0;
+    margin-top: 5px;
+    background-color: rgb(51,51,51);
+    color: rgb(112, 110, 110);
+    font-size: 13px;
+    border-radius: 5px;
 }
-    .el-input{
+.replayInfo span{
+    margin-right: 5px;
+}
+p{
+    margin: 0;
+}
+.moreCont{
+    text-align: center;
+    color: rgb(223, 221, 221);
+    font-size: 15px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.moreCont:hover{
+    color: rgb(250, 246, 246);
+}
+.replay .el-image{
+    border-radius: 50%;
+    margin-top: 15px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.replayInfo{
+      margin-top: 15px;
+    margin-left: 15px;
+    width: 90%;
+}
+.dianzan{
+    display: inline-block;
+    padding: 0 5px;
+    border-right: 1px solid rgb(133, 131, 131);
+    cursor: pointer;
+}
+.dianzan:hover{
+    color: rgb(228, 222, 222);
+}
+.huifu span{
+    margin-left: 5px;
+}
+.time svg{
+    width: 15px;
+    height: 15px;
+    vertical-align: top;
+    cursor: pointer;
+}
+.jincaiPL{
+    color: rgb(165, 164, 164);
+    text-align: left;
+    font-weight: bold;
+}
+.time{
+      margin: 5px 0;
+     color: rgb(146, 145, 145);
+     font-size: 13px;
+     font-size: 12px;
+}
+
+.huifuiName{
+      color: rgb(109, 179, 201);
+      cursor: pointer;
+}
+.huifuiName{
+      color: rgb(124, 197, 219);
+}
+.contentname{
+    color: rgb(109, 179, 201);
+    font-size: 13px;
+    cursor: pointer;
+}
+.contentname:hover{
+    color: rgb(124, 197, 219);
+}
+.hot_content{
+    font-size: 13px;
+    color: rgb(204, 201, 201);
+}
+.replay ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.replay ul li{
+    display: inline-block;
+    text-align: left;
+    /* height: 90px; */
+    width: 100%;
+    border-bottom: 1px solid rgb(59, 59, 59);
+}
+.pinglun{
+
+    text-align: center ;
+}
+.el-textarea{
+     width: 98%;
+}
+ .playlist /deep/ .el-textarea__inner{
+    background-color: rgb(56, 56, 56);
+    border: none;
+    font-size: 13px;
+    color: rgb(223, 219, 219);
+}
+    .playlist /deep/ .btn-prev,
+    .playlist /deep/ .btn-next {
+        background-color: rgb(56, 56, 56);
+    }
+
+    .playlist /deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background-color: rgb(236, 65, 65);
+    }
+
+    .el-pagination {
+        text-align: center;
+    }
+
+    .suberName {
+        cursor: pointer;
+    }
+
+    .playlist /deep/ .el-pager li {
+        background-color: rgb(43, 43, 43);
+    }
+
+    .suberName:hover {
+        color: rgb(219, 215, 215);
+    }
+
+    .contentTxInfo svg {
+        width: 15px;
+        height: 15px;
+        vertical-align: middle;
+    }
+
+    .introduce {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .contentTxInfo span {
+        margin-right: 5px;
+        color: rgb(204, 201, 201);
+        font-size: 15px;
+    }
+
+    .introduce span {
+        font-size: 12px;
+    }
+
+    .contentTxInfo {
+        margin-left: 15px;
+        margin-top: 10px;
+        width: 65%;
+        height: 80px;
+    }
+
+    .contentTxInfo div {
+        margin-top: 10px;
+    }
+
+    .contentTx {
+        margin-left: 15px;
+        margin-top: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .userContent {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .userContent li {
+        display: inline-block;
+        width: 30%;
+        height: 100px;
+        margin-right: 30px;
+    }
+
+    .playlist /deep/ .el-input__inner {
+        background-color: rgb(77, 76, 76);
+        border-radius: 15px;
+        border: none;
+
+        color: white;
+    }
+
+    .el-input {
         width: 15%;
         position: fixed;
         right: 50px;
         z-index: 300;
         border: none;
     }
+
     .from {
         color: rgb(124, 124, 124);
     }
@@ -309,13 +658,14 @@
         vertical-align: middle;
         cursor: pointer;
     }
-    
+
     .Icon1 svg {
         width: 25px;
         height: 25px;
         vertical-align: middle;
         cursor: pointer;
     }
+
     .head span {
         display: inline-block;
         margin-left: 10px;
@@ -499,9 +849,11 @@
     .playlist /deep/ .el-table__row--striped {
         background-color: rgb(48, 48, 48);
     }
-    .playlist /deep/ .el-table__empty-block{
-        background-color: rgb(43,43,43);
+
+    .playlist /deep/ .el-table__empty-block {
+        background-color: rgb(43, 43, 43);
     }
+
     .playlist /deep/ .el-table__row {
         background-color: rgb(48, 48, 48);
     }
@@ -534,13 +886,10 @@
         font-size: 13px;
     }
 
-    .playlist /deep/ .el-tabs__nav-wrap {
-         
-        width: 206px;
+    .playlist /deep/ .tabs {
+        z-index: 100px;
     }
-    .playlist /deep/ .tabs{
- z-index: 100px;
-    }
+
     .playlist /deep/ .el-tabs__active-bar {
         background-color: rgb(236, 65, 65);
     }

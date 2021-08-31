@@ -1,4 +1,4 @@
-import {playlistDetail,playlisthighqualitytags,highqualityPlaylist,playlisthot,homePage,recMvs,recSongs,privateContent,newSongs,topPlaylist} from "../../api/findSongs/index"
+import {commentPlaylist,playlistSubscribers,playlistDetail,playlisthighqualitytags,highqualityPlaylist,playlisthot,homePage,recMvs,recSongs,privateContent,newSongs,topPlaylist} from "../../api/findSongs/index"
 import {songDetail} from '../../api/playSong/index'
 export default{
     namespaced:true,
@@ -23,9 +23,31 @@ export default{
             psize:50
         },//热门歌单分类分页
         playlistDetail:[],//歌单详情
-        tracks:[]//歌单歌曲
+        tracks:[],//歌单歌曲
+        playlistSubscribers:[],//收藏者
+        page2:{
+            total:0,
+            pno:1,
+            psize:60
+        },//收藏者分类
+        page3:{
+            total:0,
+            pno:1,
+            psize:50
+        },//评论
+        commentPlaylist:[],
+        hotCommentPlaylist:[],//热评
     },
     getters:{
+        getHotCommentPlaylist(state){
+            return state.hotCommentPlaylist;
+        },
+        getCommentPlaylist(state){
+            return state.commentPlaylist;
+        },
+        getPlaylistSubscribers(state){
+            return state.playlistSubscribers;
+        },
         getTracks(state){
            return function(words){ //getters传参 返回函数(闭包)
                 if(!words){  
@@ -43,8 +65,14 @@ export default{
         getPlaylistDetail(state){
            return state.playlistDetail;
         },
+        getPage2(state){
+            return state.page2;
+        },
         getPage1(state){
             return state.page1;
+        },
+        getPage3(state){
+            return state.page3;
         },
         getPage(state){
             return state.page;
@@ -103,11 +131,26 @@ export default{
         }
     },
     mutations:{
+        setCommentPlaylist(state,comment){
+            state.commentPlaylist=comment;
+        },
+        setHotcommentPlaylist(state,comment){
+            state.hotCommentPlaylist=comment
+        },
+        setPlaylistSubscribers(state,playlistSubscribers){
+            state.playlistSubscribers=playlistSubscribers;
+        },
         setTracks(state,ids){
             state.tracks=ids;
         },
         setPlaylistDetail(state,playlist){
             state.playlistDetail=playlist;
+        },
+        setPage2(state,page){
+            state.page2=page;
+        },
+        setPage3(state,page){
+            state.page3=page;
         },
         setPage1(state,page){
             state.page1=page;
@@ -203,15 +246,33 @@ export default{
         async GetPlaylistDetail({commit},id){
             let res=await playlistDetail(id);
             if(!res) return;
+            // console.log(res);
             let {playlist} =res.data;
             let songIds=[];
             playlist.trackIds.forEach(item=>songIds.push(item.id));
             let res1=await songDetail(songIds.toString())
             if(!res1) return;
-            console.log(res1);
+            // console.log(res1);
             let {songs}=res1.data;
             commit('setTracks',songs);
             commit('setPlaylistDetail',playlist);
+        },
+        async GetPlaylistSubscribers({commit,state},page){
+            let res=await playlistSubscribers(page);
+            console.log(res);
+            if(!res) return;
+            let {subscribers,total}=res.data;
+            // console.log(total);
+            commit('setPage2',{...state.page2,total});
+            commit('setPlaylistSubscribers',subscribers);
+        },
+        async GetCommentPlaylist({commit,state},page){
+              let res= await commentPlaylist(page);
+              if(!res) return;
+              let {hotComments,comments,total}=res.data
+              commit('setHotcommentPlaylist',hotComments);
+              commit('setCommentPlaylist',comments);
+              commit('setPage3',{...state.page3,total});
         }
     }
 }

@@ -395,6 +395,7 @@
                 if (action == 'confirm') {
                     // console.log(2); 
                     this.getLogout();
+                    sessionStorage.clear();//清除cookie
                     //打开bar才能点击退出，因此userInFoBarShow最后的状态时true，
                     // 关闭的时候应该设为false,防止再次登录时直接显示//
                     this.$notify({
@@ -403,6 +404,7 @@
                         type: 'warning',
                     })
                     this.userInFoBarShow = false;
+                    this.$router.push({name:'findSong1'})
 
                 }
             },
